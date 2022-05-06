@@ -1,0 +1,2756 @@
+### SOLID:
+Single responsibility principle: each class only does one thing and every class or module only has responsibility for one part of the software’s functionality. 
+	More simply, each class should solve only one problem
+Open-Closed principle: Open for extension not modification: changing classes can lead to problems or bugs.Instead of changing the class,you simply want to extend it.
+Liskov substitution: it should be possible to substitute derived class with base class. 
+	Functions that use pointers or references to base classes must be able to use objects of derived classes without knowing it.
+Interface segregation: Make fine grained interfaces that are client-specific. Clients should not be forced to implement interfaces they do not use.
+	this means that you don’t want to just start with an existing interface and add new methods. 
+	Instead, start by building a new interface and then let your class implement multiple interfaces as needed. 
+	Smaller interfaces mean that developers should have a preference for composition over inheritance and for decoupling over coupling. 
+Dependency invertion: depend on an abstraction not concretion
+
+### ACID: 
+atomicity: All changes to data are performed as if they are a single operation. That is, all the changes are performed, or none of them are.
+consistency: Data is in a consistent state when a transaction starts and when it ends.For example, in an application that transfers funds from one account to
+another, the consistency property ensures that the total value of funds in both the accounts is the same at the start and end of each transaction.
+isolation: The intermediate state of a transaction is invisible to other transactions. As a result, transactions that run concurrently appear to be serialized.
+durability: After a transaction successfully completes, changes to data persist and are not undone, even in the event of a system failure.
+
+### BASIC
+SOAP: supports xml based RPC. Jax-WS is used now, so actual mechanism is hidden. @WebService, @WebMethod. Client side-> service.getPort().getMethod()
+HASH CODE: bad hascode leads to LinkedList structure for hashmap (bucket)
+SUBSTRING: Until Java7, substr holds the reference of orijinal 1GB str
+DOUBLE CHECKED LOCKING: private static volatile Singleton singleton; getInstance() -> null cont + syncronized + null cont + return new
+HASHMAP: keySet(), entrySet() ->if you ned key and value
+STRING: with new() created in heap, "abc" created in string pool (in permgen area of heap). User String.intern() to put explicitly into string pool
+Integer I -> goes to heap, int i -> stays on the stack
+Integer[] i = {1,2} -> 3 heap obj.  int[]i = {1,2} -> one heap only
+SET: no duplicate element
+LIST: is ordered colection and can contains duplicates
+MAP: maps keys to values, no duplicate keys
+QUEUE, DEQUEUE, ITERATOR, SORTEDSET, SORTEDMAP
+ITERATOR fail-fast/fail-safe: iterator checks if any modification when we try to get next element, if any throws ConcurrentModificationException
+	if the collection is concurrent, so iterator is not fail fast, it is fail safe
+ARRAY vs ARRAYLIST:  array contains primitives and objects. Arraylist contain objects. arrays fixed size, arraylist have addAll,removaAll and iterator
+ARRAYLIS vs LINKEDLIST: get arraylist O(1), linkedlist O(n). insert,add,remove is fast at linkedlist, bec no resize update vs
+	linkedlist consumes more memory be every node stores reference or prev and next node
+BLOCKING QUEUE: wait for the queue become non-empty when retrieving, and wait for space available when adding. Producer&Consumer
+QUEUE vs STACK: queue -> FIFO, dequeue -> allows to retrieve from both end. stack -> LIFO. queue is an interface, stack is a class extends vector
+REFLECTION: examine an object class at runtime. construct an object for a class at runtime, examine class's fields and methods at runtime. Invoke any method
+CLASS: a model represent data, have fields and methods
+OBJECT: interfaces of a class
+BLACKBOX: you know input output. ignore how it works
+ABSTRACTION: hiding the details of implementation
+ENCAPSULATION: restricting access of some fields or methods by access modifiers
+INHERITANCE: commons are in parent/base/super. subclasses inherits these behaviors. You sometimes make super abstract (not concrete). we use extends keyword
+INTERFACE: protocol, implementations must provide concrete methods
+POLYMORPHISM: you can invoke same operations on objects of different classes, and they behave in their own way
+	shape.draw() => the client dont know what the shape is, but the operation behave accordingly (for ex rectangle or oval)
+	There are two types of polymorphism – compile time polymorphism and runtime polymorphism.
+	Compile-time polymorphism is achieved by method overloading. Here compiler will be able to identify the method to invoke at compile-time,
+		hence it’s called compile-time polymorphism
+	Runtime polymorphism is implemented when we have an “IS-A” relationship between objects. This is also called a method overriding because 
+		the subclass has to override the superclass method for runtime polymorphism. java compiler doesn’t know the actual implementation class of 
+		Shape that will be used at runtime, hence runtime polymorphism:
+		Shape sh = new Circle(); sh.draw();
+		Shape sh1 = getShape(); //some third party logic to determine shape
+		sh1.draw();
+		
+VOLATILE: forces threads to read this value from main memory. Also each write to volatile will be flushed immediately
+ATOMIC INTEGER: can be used like syncronized. remember inc(), dec() counter example
+SYNCRONIZED/VOLATILE: established happens-before relation. Makes variable visible to all threads
+MONITOR LOCK: Syncronized method çağrıldığında acquire edilir
+IMMUTABLE objects: final properties/non-final but no setter -> only constructor. Final bir obje reassign edilemez ama propertileri değiştirilebilir
+	do not need sync, because never updated by more than 1 thread, any update will lead a new object
+	Like many Java classes, the BigDecimal class is immutable:  sum = new BigDecimal(0); sum = sum.add(diff);
+	the object represents a particular number and cannot be changed. When arithmetic is performed on the object, a new object is created 
+EXECUTOR submit() vs execute(): submit returns an object of Future. Future.get() rethrows this exception. execute: directly throws
+EXECUTORSERVICE executer = ExecuterService.newFixedThreadPool(10);
+	executors support fire-forget: executor.execute(new Runnable() {public void run(){...}});
+	if result is important, use submit, get Future object
+	private final REENTRANTLOCK lock = new ReentrantLock(); lock.lock(); ... lock.unlock(); -> like syncronized monitor lock
+	lock.trylock(1,TimeUnit.Seconds);
+WAITING: lock();
+TIMED-WAITING: trylock();
+BLOCKED: thread is waiting for monitor
+THREAD LOCAL: when you have some objects, that is not thread-safe but you want to avoid sync, give each thread its own instance (like SimpleDateFormat)
+
+DOM and SAX parser: dom creates inmemory tree representation of xml document, while sax is event driven
+CDATA: cdata section is not parsed by xmlparser
+XML BINDING: JaxB -> java api for xml binding, create java objects from xml
+JAVA8: foreach method for iterable interfaces. takes consumer object as input, this object has accept method.
+	this is invoked. myList.forEach(new Consumer<Integer>() {public void accept(Integer t) {...}});
+	@FunctionalInterface: Default and static methods of interfaces
+	lambda expressions
+	Stream api to perform filter/map/reduce like operations with collections. sequential and parallel execution
+JAVA11: new String methods (lines, isBlank, strip)
+	new Files methods (readString, writeString)
+	Collection toArray method
+	Predicate not method => sampleList.stream().filter(Predicate.not(String::isBlank))
+	Local variable for Lambda => sampleList.stream().map((@Nonnull var x) -> x.toUpperCase()).collect(Collectors.joining(", "))
+	new HttpClient (supports http/1.1 and http/2)
+JAVA STREAM API: A sequence of elements supporting sequential and parallel aggregate operations. 
+	For example, Collection.stream() creates a sequential stream, and Collection.parallelStream() creates a parallel one.
+	Collections and streams, while bearing some superficial similarities, have different goals. 
+	Collections are primarily concerned with the efficient management of, and access to, their elements.
+	By contrast, streams do not provide a means to directly access or manipulate their elements,
+	and are instead concerned with declaratively describing their source and the computational operations which will be performed in aggregate on that source.
+	To perform a computation, stream operations are composed into a stream pipeline. 
+	A stream pipeline consists of a source (which might be an array, a collection, a generator function, an I/O channel, etc), 
+	zero or more intermediate operations (which transform a stream into another stream, such as filter(Predicate)), 
+	and a terminal operation (which produces a result or side-effect, such as count() or forEach(Consumer)).
+	Streams are lazy; computation on the source data is only performed when the terminal operation is initiated, and source elements are consumed only as needed.
+	int sum = widgets.stream()
+                      .filter(w -> w.getColor() == RED) => intermediate operations
+                      .mapToInt(w -> w.getWeight()) => intermediate operations
+                      .sum(); => terminal operation
+
+####################
+JAVA PERFORMANCE (https://learning.oreilly.com/library/view/java-performance-2nd/9781492056102)
+
+==>CPU:
+% vmstat 1
+procs -----------memory---------- ---swap-- -----io---- -system-- ----cpu----
+r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa
+ 2  0      0 1797836 1229068 1508276 0    0     0     9 2250 3634 41  3 55  0
+ 2  0      0 1801772 1229076 1508284 0    0     0     8 2304 3683 43  3 54  0
+During each second, the CPU is busy for 450 ms (42% of the time executing user code, and 3% of the time executing system code). Similarly, 
+the CPU is idle for 550 ms. The CPU can be idle for multiple reasons:
+	The application might be blocked on a synchronization primitive and unable to execute until that lock is released.
+	The application might be waiting for something, such as a response to come back from a call to the database.
+	The application might have nothing to do.
+CPU time is the first thing to examine when looking at the performance of an application. 
+The goal in optimizing code is to drive the CPU usage up (for a shorter period of time), not down.
+Understand why CPU usage is low before diving in and attempting to tune an application.
+==>DISK: 
+% iostat -xm 5
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+          35.05    0.00    7.85   47.89    0.00    9.20
+
+          Device:         rrqm/s   wrqm/s     r/s     w/s    rMB/s
+          sda               0.00     0.20    1.00  163.40     0.00
+
+          wMB/s avgrq-sz avgqu-sz   await r_await w_await  svctm  %util
+          81.09  1010.19   142.74  866.47   97.60  871.17   6.08 100.00
+The nice thing about Linux is that it tells us immediately that the disk is 100% utilized;it also tells us that processes are spending 47.89% of their time in iowait 
+(that is, waiting for the disk).
+Even on other systems with only raw data available, that data will tell us something is amiss: the time to complete the I/O (w_await) is 871 ms, 
+the queue size is quite large, and the disk is writing 81 MB of data per second.This all points to disk I/O as problem and that the amount of I/O in the application 
+(or, possibly, elsewhere in the system) must be reduced.
+Monitoring disk usage is important for all applications. For applications that don’t directly write to disk, system swapping can still affect their performance.
+Applications that write to disk can be bottlenecked both because they are writing data inefficiently (too little throughput) 
+or because they are writing too much data (too much throughput).
+==>NETWORK:
+% nicstat 5
+Time      Int       rKB/s   wKB/s   rPk/s   wPk/s   rAvs    wAvs   %Util  Sat
+17:05:17  e1000g1   225.7   176.2   905.0   922.5   255.4   195.6  0.33   0.00
+The e1000g1 interface is a 1,000 MB interface; it is not utilized very much (0.33%) in this example. 
+The usefulness of this tool (and others like it) is that it calculates the utilization of the interface. 
+In this output, 225.7 Kbps of data are being written, and 176.2 Kbps of data are being read over the interface. 
+Doing the division for 1,000 MB network yields the 0.33% utilization figure,and the nicstat tool was able to figure out the bandwidth of the interface automatically.
+For network-based applications, monitor the network to make sure it hasn’t become a bottleneck.
+Applications that write to the network can be bottlenecked because they are writing data inefficiently (too little throughput) 
+or because they are writing too much data (too much throughput).
+==>JIT COMPILERS:
+Languages like C++ and Fortran are called compiled languages because their programs are delivered as binary (compiled) code: the program is written, 
+and then a static compiler produces a binary.Languages like PHP and Perl, on the other hand, are interpreted. The same program source code can be run on 
+any CPU as long as the machine has the correct interpreter (that is, the program called php or perl).Java attempts to find a middle ground here.
+Java applications are compiled—but instead of being compiled into a specific binary for a specific CPU, they are compiled into an intermediate low-level language.
+This language (known as Java bytecode) is then run by the java binary (in the same way that an interpreted PHP script is run by the php binary). 
+This gives Java the platform independence of an interpreted language.Because it is executing an idealized binary code, the java program is able to compile the code 
+into the platform binary as the code executes. This compilation occurs as the program is executed: it happens “just in time.”
+Tuning the Code Cache: When the JVM compiles code, it holds the set of assembly-language instructions in the code cache. 
+The code cache has a fixed size, and once it has filled up, the JVM is not able to compile any additional code.
+It is easy to see the potential issue here if the code cache is too small. Some hot methods will get compiled, 
+but others will not, the application will end up running a lot of (very slow) interpreted code.
+==>GARBAGE COLLECTION:
+At a basic level, GC consists of finding objects that are in use and freeing the memory associated with the remaining objects (those that are not in use).
+Though the details differ somewhat, most garbage collectors work by splitting the heap into generations. These are called the old (or tenured) generation and 
+the young generation. The young generation is further divided into sections known as eden and the survivor spaces
+Objects that are created in the loop(for temp use), will be placed in the youg generation. Objects are first allocated in the young generation, 
+which is a subset of the entire heap. When the young generation fills up, the garbage collector will stop all the application threads and empty out the young 
+generation. Objects that are no longer in use are discarded, and objects that are still in use are moved elsewhere.This operation is called a minor GC or a young GC.
+As objects are moved to the old generation, eventually it too will fill up, and the JVM will need to find any objects within the old generation that 
+are no longer in use and discard them. This is where GC algorithms have their biggest differences. The simpler algorithms stop all application threads, 
+find the unused objects, free their memory, and then compact the heap. 
+This process is called a full GC, and it generally causes a relatively long pause for the application threads.
+On the other hand, it is possible—though more computationally complex—to find unused objects while application threads are running. 
+Because the phase where they scan for unused objects can occur without stopping application threads, these algorithms are called concurrent collectors. 
+They are also called low-pause
+If enough CPU is available, using the concurrent collector to avoid full GC pauses will allow the job to finish faster.
+If CPU is limited, the extra CPU consumption of the concurrent collector will cause the batch job to take more time.
+The serial garbage collector: The serial collector uses a single thread to process the heap. It will stop all application threads as the heap is processed 
+	(for either a minor or full GC). During a full GC, it will fully compact the old generation.
+	This is the default collector if the application is running on a client-class machine (32-bit JVMs on Windows) or on a single-processor machine. 
+The throughput collector: In JDK 8, the throughput collector is the default collector for any 64-bit machine with two or more CPUs. 
+	The throughput collector uses multiple threads to collect the young generation, which makes minor GCs much faster than when the serial collector is used. 
+	This uses multiple threads to process the old generation as well. Because it uses multiple threads, 
+	the throughput collector is often called the parallel collector. The throughput collector stops all application threads during both minor and full GCs, 
+	and it fully compacts the old generation during a full GC.
+The G1 GC collector: The G1 GC (or garbage first garbage collector) uses a concurrent collection strategy to collect the heap with minimal pauses. 
+	It is the default collector in JDK 11 and later for 64-bit JVMs on machines with two or more CPUs.
+	the young generation is still collected by stopping all application threads and moving all objects that are alive 
+	into the old generation or the survivor spaces. the old generation is processed by background threads that don’t need to stop 
+	the application threads to perform most of their work.
+G1 GC is the better choice, When G1 GC is not the better choice, the decision between the throughput and serial collectors is based on 
+the number of CPUs on the machine. With a single cpu and with a long-running application thread (batch) taking the only available CPU, G1 GC isn’t a good choice. 
+G1 GC is currently the better algorithm to choose for a majority of applications.
+The serial collector makes sense when running CPU-bound applications on a machine with a single CPU, even if that single CPU is hyper-threaded. 
+G1 GC will still be better on such hardware for jobs that are not CPU-bound.
+The throughput collector makes sense on multi-CPU machines running jobs that are CPU bound. Even for jobs that are not CPU bound, 
+the throughput collector can be the better choice if it does relatively few full GCs or if the old generation is generally full.
+GC TUNING:
+Sizing the Heap: If the heap is too small, the program will spend too much time performing GC and not enough time performing application logic. 
+The time spent in GC pauses is dependent on the size of the heap, so as the size of the heap increases, the duration of those pauses also increases. 
+The pauses will occur less frequently, but their duration will make the overall performance lag.
+Sizing the Generations: Within the overall heap size, the sizes of the generations are controlled by how much space is allocated to the young generation.
+The young generation will grow in tandem with the overall heap size, but it can also fluctuate as a percentage of the total heap 
+(based on the initial and maximum size of the young generation). Adaptive sizing controls how the JVM alters the ratio of young generation to old generation 
+within the heap. Adaptive sizing should generally be kept enabled, since adjusting those generation sizes is how GC algorithms attempt 
+to meet their pause-time goals. For finely tuned heaps, adaptive sizing can be disabled for a small performance boost
+Sizing Metaspace: When the JVM loads classes, it must keep track of certain metadata about those classes. This occupies a separate heap space called the metaspace. 
+In older JVMs, this was handled by a different implementation called permgen. The initial size of this region can be based on 
+its usage after all classes have been loaded. That will slightly speed up startup. Applications that define and discard a lot of classes will see an 
+occasional full GC when the metaspace fills up and old classes are removed. This is particularly common for a development environment.
+Controlling Parallelism: All GC algorithms except the serial collector use multiple threads. The number of these threads is controlled by 
+the -XX:ParallelGCThreads=N flag. The basic number of threads used by all GC algorithms is based on the number of CPUs on a machine.
+When multiple JVMs are run on a single machine, that number will be too high and must be reduced.
+==>HEAP MEMORY:
+heap histograms are a quick way to look at the number of objects within an application without doing a full heap dump 
+(since heap dumps can take a while to analyze, and they consume a large amount of disk space)
+The JVM throws an out-of-memory error under these circumstances:
+    1.No native memory is available for the JVM.
+    	Exception in thread "main" java.lang.OutOfMemoryError:
+		unable to create new native thread
+	Other exmaple: in Linux, users are often allowed to create only 1,024 processes (a value you can check by running ulimit -u). 
+		The attempt to create a 1,025th thread will throw that same OutOfMemoryError
+    2.The metaspace is out of memory.
+    	Exception in thread "main" java.lang.OutOfMemoryError: Metaspace
+    	This error can have two root causes: The first is simply that the application uses more classes than can fit in the metaspace you’ve assigned
+	The second case is trickier: it involves a classloader memory leak. This occurs most frequently in a server that loads classes dynamically. 
+	One such example is a Java EE application server. Each application that is deployed to an app server runs in its own classloader
+	each time the application is changed, it must be redeployed: a new classloader is created to load the new classes, 
+	and the old classloader is allowed to go out of scope. Once the classloader goes out of scope, the class metadata can be collected
+    3.The Java heap itself is out of memory: the application cannot create any additional objects for the given heap size.
+    	Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
+	heap dump analysis is necessary to find out what is consuming the most memory
+	If the application has a memory leak, take successive heap dumps a few minutes apart and compare them.
+    4.The JVM is spending too much time performing GC.
+	Exception in thread "main" java.lang.OutOfMemoryError: GC overhead limit exceeded
+	when full gc spend mcuh time + full gc reclaimes little amount (frees very little portion) => this 2 condition were met for consecutive 5 full gc
+==>NATIVE MEMORY:
+the configuration of the heap and how it interacts with the native memory of the operating system is another important factor in the performance of application.
+The heap (usually) accounts for the largest amount of memory used by the JVM,but the JVM also uses memory for its internal operations.
+This nonheap memory is native memory.
+The total of native and heap memory used by the JVM yields the total footprint of an application.
+==>THREADING and SYNCHRONIZATION:
+Using simpler options for a ThreadPoolExecutor will usually provide the best (and most predictable) performance.
+public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTime,TimeUnit unit,
+                          BlockingQueue<Runnable> workQueue,ThreadFactory threadFactory,RejectedExecutionHandler handler)
+	corePoolSize - the number of threads to keep in the pool, even if they are idle, unless allowCoreThreadTimeOut is set
+	maximumPoolSize - the maximum number of threads to allow in the pool
+	keepAliveTime - when the number of threads is greater than the core, this is the maximum time that excess idle threads will wait for new tasks before termin
+	unit - the time unit for the keepAliveTime argument
+	workQueue - the queue to use for holding tasks before they are executed. This queue will hold only the Runnable tasks submitted by the execute method.
+	threadFactory - the factory to use when the executor creates a new thread
+	handler - the handler to use when execution is blocked because the thread bounds and queue capacities are reached
+private volatile ConcurrentHashMap instanceChm;
+The volatile keyword accomplishes two things in this example. First, note that the hash map is initialized using a local variable first, 
+and only the final (fully initialized) value is assigned to the instanceChm variable. If the code populating the hash map were using the instance variable directly, 
+a second thread could see a partially populated map. And second, it ensures that when the map is completely initialized, 
+other threads will immediately see that value stored into the instanceChm variable.
+When a thread leaves a synchronized block, it must flush any modified variables to main memory. 
+ and a variable marked volatile is always consistently updated in main memory whenever it is changed.
+CAS-based (faster)				Traditional synchronization
+AtomicLong al = new AtomicLong(0);	~~ 	private long al = 0;
+public long doOperation() {		~~	public synchronized doOperation() {
+    return al.getAndIncrement();	~~		return al++;
+}					~~	}
+Thread-local variables are never subject to contention; they are ideal for holding synchronized objects that don’t actually need to be shared between threads.
+==>JAVA SERVERS:
+In early versions of Java, all I/O was blocking.Blocking I/O requires that the server has a one-to-one correspondence between client connections 
+and server threads; each thread can handle only a single connection. when Java introduced NIO APIs (new I/O) that were nonblocking, 
+server frameworks migrated to that model for their client handling. Now the socket associated with each client is registered with a selector in the server 
+When the client sends a request, the selector gets an event from the operating system and then notifies a thread in the server thread pool 
+that a particular client has I/O that can be read. That thread will read the data from the client, process the request, send the response back, 
+and then go back to waiting for the next request
+==>DATABASE:
+Connections are expensive objects to initialize; they are routinely pooled in Java—either in the JDBC driver itself or within JPA and other frameworks
+As with other object pools, it is important to tune the connection pool so it doesn’t adversely affect the garbage collector. 
+In this case, it is also necessary to tune the connection pool so it doesn’t adversely affect the performance of the database itself.
+In most circumstances, code should use a PreparedStatement rather than a Statement for its JDBC calls. 
+This aids performance: prepared statements allow the database to reuse information about the SQL that is being executed.
+Prepared statements also have security and programming advantages, particularly in specifying parameters to the call.
+Reuse is the operative word here: the first use of a prepared statement takes more time for the database to execute, since it must set up and save information. 
+If the statement is used only once, that work will be wasted; it’s better to use a regular statement in that case.
+Prepared statement pools operate on a per connection basis. If one thread in a program pulls a JDBC connection out of the pool and uses a prepared statement 
+on that connection, the information associated with the statement will be valid only for that connection.
+Use setMaxStatements() method of the ConnectionPoolDataSource class to enable or disable statement pooling. 
+Transactions:
+Better performance will be achieved if autocommit mode is disabled and an explicit commit is performed at the end of the loop
+When inserts are batched, the JDBC driver holds them until the batch is completed; then all statements are transmitted in one remote JDBC call
+Here are the basic transaction isolation modes 
+	TRANSACTION_SERIALIZABLE
+This is the most expensive transaction mode; it requires that all data accessed within the transaction be locked for the duration of the transaction. 
+This applies both to data accessed via a primary key and to data accessed via a WHERE clause—and when there is a WHERE clause, 
+the table is locked such that no new records satisfying the clause can be added for the duration of the transaction. 
+A serialized transaction will always see the same data each time it issues a query.
+	TRANSACTION_REPEATABLE_READ
+This requires that all accessed data is locked for the duration of the transaction. However, other transactions can insert new rows into the table at any time. 
+This mode can lead to phantom reads: a transaction that reissues a query with a WHERE clause may get back different data the second time the query is executed.
+	TRANSACTION_READ_COMMITTED
+This mode locks only rows that are written during a transaction. This leads to nonrepeatable reads: 
+data that is read at one point in the transaction may be different from data that is read at another point in the transaction.
+	TRANSACTION_READ_UNCOMMITTED
+This is the least expensive transaction mode. No locks are involved, so one transaction may read the written (but uncommitted) data in another transaction. 
+This is known as a dirty read; the problem here arises because the first transaction may roll back (meaning the write never actually happens), 
+and hence the second transaction is operating on incorrect data.
+
+select FOR UPDATE clause. This kind of locking is called pessimistic locking. It actively prevents other transactions from accessing the data in question.
+In a database, optimistic concurrency is implemented with a version column. 
+Applications that process large amounts of data from a query should consider changing the fetch size of the data.
+in some cases it will be more efficient to keep the bulk of the data in the database and retrieve it as needed, 
+while in other cases it will be more efficient to load all the data at once when the query is executed. 
+To control this, use the setFetchSize() method on the PreparedStatement object to let the JDBC driver know how many rows at a time it should transfer.
+
+==>JPA:
+Batching JPA updates can be done declaratively (in the persistence.xml file) or programmatically (by calling the flush() method).
+JPA reads data from the database in three cases: when the find() method of the EntityManager is called, when a JPA query is executed, 
+and when code navigates to a new entity using the relationship of an existing entity.
+By default, related entities are already fetched eagerly if the relationship type is @OneToOne or @ManyToOne 
+(and so it is possible to apply the opposite optimization to them: mark them as FetchType.LAZY if they are almost never used).
+Using JOIN in queries: Query q = em.createQuery("SELECT s FROM StockOptionImpl s JOIN FETCH s.optionsPrices");
+Batching and queries: Hibernate offers a custom @BatchSize annotation.
+Query q = em.createNamedQuery("selectAll"); query.setFirstResult(101); query.setMaxResults(100); List<? implements StockPrice>  = q.getResultList();
+Jpa Caching: Two kinds of caches exist in JPA. Each entity manager instance is its own cache: it will locally cache data that it has retrieved during a transaction.
+It will also locally cache data that is written during a transaction; the data is sent to the database only when the transaction commits. 
+A program may have many entity manager instances, each executing a different transaction, and each with its own local cache. 
+(In particular, the entity managers injected into Java servers are distinct instances.)
+When an entity manager commits a transaction, all data in the local cache can be merged into a global cache. 
+The global cache is shared among all entity managers in the application. The global cache is also known as the Level 2 (L2) cache or the second-level cache; 
+the cache in the entity manager is known as the Level 1, L1, or first-level cache
+The JPA cache operates only on entities accessed by their primary keys, that is, items retrieved from a call to the find() method, 
+or items retrieved from accessing (or eagerly loading) a related entity. 
+Items retrieved via a query are not held in the L2 cache => @NamedQuery(name="findAll", query="SELECT s FROM StockPriceImpl s ORDER BY s.id.symbol")
+Join fetch and caching: The first time the loop is executed with a JOIN query, a big performance win results
+Unfortunately, the next time the code is executed, it still needs that one SQL statement, since query results are not in the L2 cache.
+If the JPA provider implements query caching, this is clearly a good time to use it. So Unless query caching is supported by the JPA implementation in use, 
+using a JOIN query turns out to frequently have a negative performance effect, since it bypasses the L2 cache.
+@NamedQuery(name="findAll",
+    query="SELECT s FROM StockPriceEagerLazyImpl s " +
+    "JOIN FETCH s.optionsPrices ORDER BY s.id.symbol")
+Spring Data JDBC : designed as a simple alternative to JPA.It provides a similar entity mapping as JPA but without caching, lazy loading, dirty entity tracking. 
+Spring Data JPA: designed as a wrapper around standard JPA
+Spring Data for NoSQL: Spring has various connectors for NoSQL (and NoSQL-like) technologies, including MongoDB, Cassandra, Couchbase, and Redis.
+Spring Data R2DBC:  allows asynchronous JDBC access to Postgres, H2, and Microsoft SQL Server databases
+==>JAVA SE
+Compact Strings: In Java 11, strings are encoded as arrays of 8-bit bytes unless they explicitly need 16-bit characters
+The duplicate strings can be removed in three ways: automatic deduplication via G1 GC, Using the intern() method, Using a custom method to create a canonical
+One-line concatenation of strings yields good performance. For multiple concatenation operations, make sure to use StringBuilder.
+Buffered I/O performance: The InputStream.read() and OutputStream.write() methods operate on a single character.  On most operating systems, 
+the kernel will have buffered the I/O, so (luckily) this scenario doesn’t trigger a disk read for each invocation of the read() method. 
+But that buffer is held in the kernel, not the application, and reading a single byte at a time means making an expensive system call for each method invocation.
+For file-based I/O using binary data, always use BufferedInputStream or BufferedOutputStream to wrap the underlying file stream. 
+For file-based I/O using character (string) data, always wrap the underlying stream with BufferedReader or BufferedWriter.
+Don’t forget to test for the logging level before calling the logger if the arguments to the logger require method calls or object allocation.
+A LinkedList is not suitable for searching; if access to a random piece of data is required, store the collection in a HashMap. 
+If the data needs to remain sorted, use a TreeMap rather than attempting to sort the data in the application. 
+Use an ArrayList if the data will be accessed by index, but not if data frequently needs to be inserted into the middle of the array.
+When most developers are asked how to quickly sort any array, they will offer up quicksort as the answer. Good performance engineers 
+will want to know the size of the array: if the array is small enough, the fastest way to sort it will be to use insertion sort.4 Size matters.
+The choice between using a lambda or an anonymous class should be dictated by ease of programming, since there is no difference between their performance.
+Filters offer a significant performance advantage by allowing processing to end in the middle of iterating through the data.
+Even when the entire data set is processed, a single filter will slightly outperform an iterator.
+Multiple filters have overhead; make sure to write good filters.
+To improve object serialization cost, serialize less data. This is done by marking fields as transient, in which case they are not serialized by default.
+
+####################
+EJB: Session Beans -> stores data of a user for a single session. ıt can be statefull or stateles.
+	Entity Beans -> represent persistent data storage
+	Message Drive Bean -> used in context of JMS
+	Statefull Session Bean (Shopping cart) @Local -> only local access or @Remote -> can run on a different machine. it doesn't require differ jvm
+		@Local public interface Cart{void addProduct(); void checkout();}
+		@Statefull public class CartBean implemenst Cart {@PersistenceContext private EntityManager em; ...}
+	Stateless Session Bean (Calculator service)
+	Access ejb from servlet: Context ctx = new InitialContext(env); CalculatorService srv = (CalculatorService) ctx.lookup("...");
+JSF+PRIMEFACE+SPRING+HIBERNATE: spring applicaiton context -> <bean id="userService" ... />
+	@ManagedBean(name="userMB")
+	@RequestScoped public class UserManagedBean implements Serializable { @ManagedProperty(value="#{userService}") IUserService; }
+index.html -> <p:inputText id ="id" value="#{userMB.id}" /> <p:inputText id ="name" value="#{userMB.name}" /> <p:commandButton id ="add" action="#{userMB.add}" />
+
+####################
+GIT
+Working Directory	Staging Area		Local Repo(Head)	Remote Repo(Master)
+	-- git add -->		-- git commit -->		-- git push -->	
+		<------------ git merge -------------		<-- git fetch --
+		<----------------------------- git pull ------------------------
+
+git pull:  git fetch + git merge (automatically merges the commits without letting you review them first.)
+git reset: reset staging area to match most recent commit, but leave the working directory unchanged
+git reset --hard: reset staging area and working directory to match most recent commit and overwrites all changes in the working directory.
+git diff: to show the files changes not yet staged
+git log: git commit history
+git revert <commit>: create new commit that undoes all of the changes made in <commit>, then apply it to the current branch.
+git merge <branch>: merge <branch> into the current branch.
+git rebase <base>: rebase the current branch onto <base>. <base> can be a commit ID, branch name, a tag, or a relative reference to HEAD.
+git rebase -i <base>: interactively rebase current branch onto <base>. Launches editor to enter commands for how each commit will be transferred to the new base.
+git stash: Stashing takes the dirty state of your working directory — that is, your modified tracked files and staged changes — 
+	and saves it on a stack of unfinished changes that you can reapply at any time (even on a different branch).
+If you consider a file in your Working Directory, it can be in three possible states.
+	It can be staged. Which means the files with the updated changes are marked to be committed to the local repository but not yet committed.
+	It can be modified. Which means the files with the updated changes are not yet stored in the local repository.
+	It can be committed. Which means that the changes you made to your file are safely stored in the local repository.
+
+####################
+JDBC: PreparedStatement.exceuteUpdate() -> insert, update, delete -> return rownum, .executeQuery() -> select -> return resultset
+	CallableStatement.prepareCall("call proc(?)").executeUpdate() > use this for stored procedure. Close resultset, statement, connection
+@TRANSACTION annotationin Spring: to enable <tx:annotation-driven transactionManager="txM"/> 
+	<bean id="txM" class="...hibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory">
+	</bean>
+	ya da JPA transactionManager kullanılabilir, bu durumda sessionFactory yerine entityManagerFactory kullanılır.
+	annontation uses transaction advice (AOP) TransactionInterceptor.readonly=true -> default read/write. 
+	propagation=REQUIRED -> creates new or reuse. If a readonly transaction calls a read-write transaction, the whole trx will be read only
+	propagation=REQUIRES-NEW ->existing trx is paused
+PERFORMANCE PROBS: Database: eager-lazy loading, caching, connection pool, Memory: GC, memory leaks, Concurrency: thread deadlock, thread pool deadlocks
+JPA: Entities, object relational metadata, jpql
+	EntityManagerFactory = Persistence.createEntitiyManagerFactory("perUnit");
+	EntityManager entityManager = factory.createEntityManager();
+	persistPerson(entityManager); -> EntityTransaction trx = entityManager.getTransaction(); trx.begin();entityManager.persist(Obj);trx.commit();
+	@Transient: Entitydeki bu field table ile ilişkili değil demektir
+	
+	https://thorben-janssen.com/complete-guide-inheritance-strategies-jpa-hibernate/
+	Inheritance: @DiscriminatorColumn -> base ve extend edeni (ya da extend eden iki taneyi) ayıran kolon
+	@Inheritance(strategy=SINGLE_TABLE/JOINED/TABLE_PER_CLASS) ve MappedSuperclass
+	
+	@MappedSuperclass => entity olamaz kendi başına
+	public abstract class Person {
+	    @Id
+	    private long personId;
+	    private String name;
+	}
+	@Entity
+	public class MyEmployee extends Person {
+	    private String company;
+	}
+	
+	TABLE_PER_CLASS
+	MappedSuperclass ile cok benzer, burada base class da entity tanimlaniyor
+	
+	SINGLE_TABLE
+	@Entity(name="products")
+	@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+	@DiscriminatorColumn(name="product_type", discriminatorType = DiscriminatorType.INTEGER)
+	public abstract class MyProduct {
+	    ...
+	}
+	@Entity
+	@DiscriminatorValue("1")
+	public class Book extends MyProduct {
+	    ...
+	}
+	@Entity
+	@DiscriminatorValue("2")
+	public class Pen extends MyProduct {
+	    ...
+	}
+	
+	JOINED
+	@Entity
+	@Inheritance(strategy = InheritanceType.JOINED)
+	public class Animal {
+	    @Id
+	    private long animalId;
+	    private String species;
+	}
+	@Entity => bu tabloda animalId ve name olur, diğer ozellikler için Animal tablosu ile join edilir
+	public class Pet extends Animal {
+	    private String name;
+	}	
+	
+	fetch: FetchType_Eager/Lazy
+	
+	Relations: OnetoOne, OneToMany, ManyToMany
+		@Entity
+		@Table(name = "users")
+		public class User {
+		    ...
+		    @OneToOne(cascade = CascadeType.ALL)
+		    @JoinColumn(name = "address_id", referencedColumnName = "id")
+		    private Address address;
+		}
+	
+		@Entity
+		@Table(schema = "BFROHES", name = "THESAP")
+		@DynamicUpdate
+		public class Hesap {
+		  ...
+		  @ManyToOne(optional = true, fetch = FetchType.LAZY)
+		  // (Optional) Whether the association is optional. If setto false then a non-null relationship must always exist
+		  @JoinColumn(name = "TALEP_ID")
+		  @Where(clause = "talepId > -1")
+		  private Talep talepId;
+		}
+	
+		public class TespitRapor {
+		   ...
+		   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "tespitRapor", targetEntity = TespitRaporDetay.class)
+    		   @MapKey(name = "id")
+    		   private List<TespitRaporDetay> tespitRaporDetayList;
+		} 
+		public class TespitRaporDetay {
+		   ...
+		   @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    		   @JoinColumn(name = "TESPIT_RAPOR_ID", nullable = false, columnDefinition = "BIGINT", referencedColumnName = "ID")
+    		   private TespitRapor tespitRapor;
+		}
+
+		@Entity
+		@Table(name = "Employee")
+		public class Employee { 
+		    ...
+		    @ManyToMany(cascade = { CascadeType.ALL })
+		    @JoinTable(
+			name = "Employee_Project", 
+			joinColumns = { @JoinColumn(name = "employee_id") }, 
+			inverseJoinColumns = { @JoinColumn(name = "project_id") }
+		    )
+		    Set<Project> projects = new HashSet<>();
+		}
+		@Entity
+		@Table(name = "Project")
+		public class Project {    
+		    ...  
+		    @ManyToMany(mappedBy = "projects")
+		    private Set<Employee> employees = new HashSet<>();
+		}		
+		
+	requires no-arg constructor, but it does not have to be public, it can be protected
+	relation must not have to be bi-directional. If sub objects do not have to know its parent uni direction is OK with @JoinColumn
+	Account ve AccountTrx teki gibi oneToMany cok ise out of memory alinir. Child'ta manyToOne tanımla ve pagination kullan
+CRITERIA API: to create query
+HIBERNATE: session = sessionFactory.openSession();
+	persistPerson(session) -> session.getTransaction().begin() ... commit() -> creates new trx , getCurrentTransaction -> reuses
+	<hibernate mapping
+		<class
+			<subclass -> SINGLETABLE  <joined-subclass -> JOINED   <union-subclass -> TABLE PER CLASS
+HIBERNATE CACHE: 1st level (session), 2nd level (sessionFactory, query cache)
+	hibernate_cache_use_second_lecel_cache=true, hibernate_cache_use_query_cache=true
+	@Cachable ile annotate et entity'i, query'de ise query.setCachable() kullan
+L1 CACHE: first leve cache, persistence context. persist(), merge(), remove() are changing only in the context and are not syncronized to db.
+	EntityManaget.persist(entity); EntityManager.flush(); EntityManager.clean(); (clean L1 cache, we need especially in batch operations)
+	we shoul flush and clean to clear persistence context
+Spring provides JDBC template, if you do not use hibernate. It also requires a data source -> define as spring bean or get by jndi lookup
+Apache Common DBCP: for standalone connection pool, if you run on java enterprice server, let server handle it
+Connection Pool of Tomcat: <Resource name="jdbc/TestDb" maxActive="100" maxIdle="10" maxWait="10000" factory="org.apache.commons.dbcp.BasicDataSourceFactory" />
+HIBERNATE Lazy/Eager . hibernate.initialize() to init lazy loaded entities
+session.load(): returns proxy without hitting the database. proxy is an object with the given id. its properties are not initialized
+	if no row found throws ObjectNotFound
+session.get(): hits the DB and return a real object, if no row returns null.
+	Stock stock = (Stock) session.load(Stock.class, id:100); stock.getStockCode(); -> here exception
+SAVE/SAVEORUPDATE/PERSIST: Save insert into db and returns the identifier. saveorupdate saves or updates, so need extra processing.
+	save, returns Serializable object, id assigned immediately
+	persist, return is void, id assignment might be at flush time
+	both make a transient instance persistent
+HIBERNATE N+1: one-to-many relationlarda parent select edilip, childlar için loop yapıldığında, N+1 query atılması durumu 
+	(Post ve Post_Comments, child'da @ManyToOne var Post için, default fetch type eagerdır burada)
+	native sql yazılmış ise, querye join eklenerek problem çözülebilir, hql yazılmış ise de join fetch kullanılabilir 
+	@ManyToOne(fetch = FetchType.LAZY) kullanırsak (ki böyle tercih ederiz performans acısından) yine join fetch ile halledebiliriz
+	tabi her durumda, fix yapılmamış olsa bile, 2nd level cache kullanılıyorsa  kayıp ilk sefer için olacak
+OPTIMISTIC LOCK: is a strategy where you read a record, take note of a version number (other methods to do this involve dates, timestamps or checksums/hashes) 
+	and check that the version hasn't changed before you write the record back. 
+PESSIMISTIC LOCK:  is when you lock the record for your exclusive use until you have finished with it. 
+	It has much better integrity than optimistic locking but requires you to be careful with your application design to avoid Deadlocks.
+	
+TRANSACTION PROPAGATION: (https://docs.spring.io/spring-framework/docs/current/reference/html/data-access.html#tx-propagation)
+	PROPAGATION_REQUIRED: enforces a physical transaction, either locally for the current scope if no transaction exists yet 
+		or participating in an existing 'outer' transaction defined for a larger scope. By default, a participating transaction 
+		joins the characteristics of the outer scope, silently ignoring the local isolation level, timeout value, or read-only flag (if any).
+	PROPAGATION_REQUIRES_NEW: always uses an independent physical transaction for each affected transaction scope, 
+		never participating in an existing transaction for an outer scope. can commit or roll back independently, with an outer transaction not affected
+		by an inner transaction’s rollback status and with an inner transaction’s locks released immediately after its completion. 
+		Such an independent inner transaction can also declare its own isolation level, timeout, and read-only settings 
+		and not inherit an outer transaction’s characteristics. I
+	PROPAGATION_NESTED: uses a single physical transaction with multiple savepoints that it can roll back to. Such partial rollbacks let 
+		an inner transaction scope trigger a rollback for its scope, with the outer transaction being able to continue the physical transaction 
+		despite some operations having been rolled back. 
+	
+TRANSACTION ISOLATION ve LOCK:
+	Dirty Read(problem 1):  Bir transaction, bir rowun değeri update eder fakat henuz transaction commit/rollback olmadan, 
+		başka bir transactionın bu değeri okumasına izin verilmesi durumudur
+	Non-Repeatable Read(problem 2): Aynı transactionda bir rowun bir kolunan atılan 2 selectin sonucunun farklı olmasına izin verilmesi durumudur. 
+		Yani 2 select arasında başka bir transactionın bu rowu update etmesine izin verilmesi durumu
+	Phantom Read(problem 3):  Bir transtionın query ile select ettiği result seti etkileyecek şekilde başka bir transactionın 
+		tabloya insert/delete yapmasına izin verilmesi durumudur.
+	Bu 3 sorunu çözebilmek için DB sunucular lock uygularlar, en cok karşımıza çıkan row-level lock olsada, bir block,tablo veya db nin kendisi de locklayabilir
+		Hatta bir tablodaki row-level lock sayısı çok fazla arttığında, db server tabloyu lock etmeyi seçebilir optimizasyon açısından. 
+		Db lock ise ürün upgradelerinde karşımıza çıkar.
+	Exclusive Lock: diğerleri okuyamaz bile, dolayısıyla yazamazlarda
+	Shared Lock: diğerleri okuyabilir, yazmak isteyenler bu lockın release edilmesini bekler
+	Trnsaction Isolation:
+		int TRANSACTION_NONE = 0;
+		int TRANSACTION_READ_UNCOMMITTED = 1; Hiçbir lock olmadığından, yukarıdaki 3 read probleminin de önüne geçmiyor
+		int TRANSACTION_READ_COMMITTED = 2; Update işlemi yapan transaction bu rowu lockladığından, 
+			diğer transactionlar ancak ilk transaction commit/rollback yaptıktan sonra bu datayı okuyabileceklerdir. Dirty Read'in önüne geçilmiş oluyor
+		int TRANSACTION_REPEATABLE_READ = 4; Bu isolation levelde lock işlemi daha select ile başlar bu sayede Non-Repeatable Read'in önüne geçilmiş olur
+		int TRANSACTION_SERIALIZABLE = 8; Phantom Read'in de önüne geçmek için row-level'dan buyuk fakat table-level'dan küçük bir lock uygulanır.
+	*DB serverlarda, isolation levelden bağımsız olarak lock uygulanıyor olabilir.
+	POSTGRESQL senaryolar
+		Read senaryoları:
+			read_uncommitted : desteklenmiyor, başka bir trx ile update edilmiş fakat henuz commit edilmemiş verinin ilk hali geldiği görüldü
+			read_committed : default isolation level. t anında entity dbden cekildi, t+1 anında başka bir trx veriyi guncelleyerek commit yaptı.
+              			t+2 anında, ilk trx bu veriyi tekrar çektiğinde güncel dataya ulaşmalı. 
+				(sadece postgre olsaydı böyle olacaktı ama ek olarak hibernate katmanımız var)
+				Peki ulaşmıyorsa sebebi nedir :
+                           		1.) entity id ile alındığından hibernate 1st level cache'te tutuluyordur ve db ye hit edilmez
+                            		2.) enitiy başka bir field ile alınsa bile enitiyManager bunu cachelediğinden, özellikle clear etmek gerekir
+                            		3.) uygulamada 2nd level cache configurasyonu vardır ve data cacheten geliyordur
+			repeatable_read : trx baslangıcında veri dbden cekildikten sonra başka trxler veriyi değiştirse bile, ilk trx ilk veri ile devam eder
+			serialiazable : en katı isolation level. t anında, trx baslangıcında tabloya where col1='abc' şeklinde query atılır ve veri donmez
+              		t+1 anınıda başka bir trx, col1='abc' olacak şekilde veri insert eder ve t+2 anında ilk trx'te tekrar aynı select çalışır ve yine veri dönmez
+		Write senaryoları:
+			read_uncommitted : desteklenmiyor
+			read_committed : tüm trxler update işlemleri yapar ve arada ezilenler olur
+			repeatable_read : t anında trx1 entityi update eder ama commit etmeden, t+1 anında trx2 bu veriyi update eder ve commit eder,
+              			t+2 anında trx1 commit etmeye calıstığında hata alır :
+					org.springframework.dao.CannotAcquireLockException -> org.hibernate.exception.LockAcquisitionException -> 
+					(postgre karşılığı) could not serialize access due to concurrent update
+			serialiazable : repeatable_read ile aynı senaryo gerceklesir
+
+
+####################
+REST: Methoda @ResponseBody eklenebilir. Tüm methodlar böyle ise classa @RestController eklemek daha doğru.
+	Jackson json libi eklersek, response JSON olur. client'ın accept headerına göre xml vs de olabilir
+REST + Spring security: only accesible for HTTPS. form-login or https basic authentication for non-browser clients. OAuth2 is better
+RESTFUL: Suns JAX-RS specification. projects that supports jax-rs: CXF, Jersey, RestEasy, Restlet. Spring Mvc -> restful functionality
+	is added to spring. @RequestMapping @ResponseBody @PathVariable, @Controller. post, get,put,delete
+@Repository: data access component
+@Service: service component
+@Controller: controller component
+@Component: all
+@ExceptionHandler(IOException.class) -> at controller method
+@Transactional annotation when service layer: A money transfers to B. Bunun için 2 dao çağrılıyor. bu sebeple ya her ikisi succeed ya da
+	fail olmalı. ayrıca daolara @Transaction(propogation= MANDATORY) eklersek trx'in caller'dan başladığını ensure etmiş oluruz
+@Inject = @Autowired , inject -> javaEE, autowired -> spring
+@Autowired ~= @Resource but resource mathes by name if fails by type. Autowired byType, then qualifier, then byName
+MULTIPLE view resolver: <bean class="spring.web.InternalResourceViewResolver" order = 1 > 
+	<bean name ="jsonView" class="spring.web.MappingJacksonJsonView" order = 2 > 
+SPRING IOC CONTAINERS: https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#spring-core
+	IoC is also known as dependency injection (DI). It is a process whereby objects define their dependencies, 
+	that is, the other objects they work with, only through constructor arguments, arguments to a factory method, 
+	or properties that are set on the object instance after it is constructed or returned from a factory method. 
+	The container then injects those dependencies when it creates the bean. 
+	This process is fundamentally the inverse, hence the name Inversion of Control (IoC), of the bean itself controlling the instantiation or location of 
+	its dependencies by using direct construction of classes, or a mechanism such as the Service Locator pattern.
+	The Spring IoC container is responsible for instantiating, initializing, and wiring beans. The container also manages the life cycle of beans.	
+	The org.springframework.beans and org.springframework.context packages are the basis for Spring Framework's IoC container. 
+	The BeanFactory interface provides an advanced configuration mechanism capable of managing any type of object. 
+	ApplicationContext is a sub-interface of BeanFactory. It adds easier integration with Spring's AOP features; 
+		message resource handling (for use in internationalization), event publication; 
+		and application-layer specific contexts such as the WebApplicationContext for use in web applications.
+	In short, the BeanFactory provides the configuration framework and basic functionality, and the ApplicationContext adds more enterprise-specific func'lity
+SPRING BEAN SCOPES: singleton, prototype, request, session
+	In Spring, the objects that form the backbone of your application and that are managed by the Spring IoC container are called beans. 
+	A bean is an object that is instantiated, assembled, and otherwise managed by a Spring IoC container.
+SPRING BEAN LIFECYCLE: 
+	>START
+	instantiation
+	populate properties
+	setBeanName: if the bean implements BeanNameAware
+	setBeanFactory: if the bean implements BeanFactoryAware
+	setApplicationContext: if the bean implements ApplicationContextAware
+	preInitialization(postProcessBeforeInitialization):if there is an implementation of Spring's BeanPostProcessor(not bean specific,hook into lifecycle for all)
+	afterPropertiesSet: if the bean implements InitializingBean
+	custom init method: init-method property when using xml configuration or @Bean(initMethod = "onInitialize", destroyMethod = "onDestroy") using java conf
+	postInitialization(postProcessAfterInitialization):if there is an implementation of Spring's BeanPostProcessor(not bean specific,hook into lifecycle for all)
+	>SHUTDOWN
+	destroy: if the bean implements DisposableBean
+	custom destroy: destroy-method property when using xml configuration or @Bean(initMethod = "onInitialize", destroyMethod = "onDestroy") using java conf
+ASPECT oriented programming (AOP): is a programming technique that allows modulirize crosscutting concerns(behaviors) like logging and trx management
+@Aspect public class GreetingAspect { ... 
+	@Around ("execution ("com.greetingservice.*(...)")")
+	public Object advice(ProceedingJointPoint pjb) {...}
+JOINPOINT: actual place where an action will be taken using AOP
+ADVICE: is the actual action(before, after, around ...)
+POINTCUT: set of one or more JOINPOINT  where an advice is executed
+TARGET obj: object have adviced,it will be a proxy
+PROXY: object that is created after applying advice
+Spring 4.3.6 ile @RequestMapping -> @GetMapping oldu
+Spring Security: spring framework UserDetail interface'ini implement et.-> getAuthorities methodu var
+	UserDetailsService'i implement et ->  loadUserByUsername methodu var
+	xmllerde java vs configleri yap
+
+
+####################
+GRAPHQL
+	-src/main/resources/graphql altına graphqls dosyaları yaratılır
+	-controllerlar yerine GraphQLQueryResolver implementasyonlarımız olur
+	-bu query'de departmentlar employee leri ile beraber isteniyor,lazy init edilen collectionların hata almamaları için 
+	GraphQLResolver<Department> implement edilir 
+		{
+		    "query":"{
+			departments {
+			    id
+			    name
+			    employees {
+				id
+				firstName
+			    }
+			}
+		    }"
+		}
+		@Component
+		public class DepartmentResolver implements GraphQLResolver<Department> {
+			public List<Employee> employees(Department department) {
+				return employeeService.getEmployeeByDepartment(department);
+			}
+		}
+	
+	-bu queryde de employeeler ile birlikte bağlı oldukları departmentlar da isteniyor, bu durumda bu bilgi DataFetchingEnvironment dan alınabilir
+		{
+		    "query":"{
+			employees {
+			    id
+			    firstName
+			    salary
+			    department {
+				id
+				name
+			    }
+			}
+		    }"
+		}
+		@Component
+		public class EmployeeQueryResolver implements GraphQLQueryResolver {
+			public List<Employee> employees(DataFetchingEnvironment environment) {
+				testHttpServletRequest(environment);
+				if (environment.getSelectionSet().contains("department")) {
+					return employeeService.getAllEmployeesWithDepartment();
+				} else {
+					return employeeService.getAllEmployees();
+				}
+
+			}
+			...
+	
+	-CriteriaBuilder ile spring data repositorynin birlikte çalışması istenirse:
+		public interface EmployeeRepository extends JpaRepository<Employee, Long>, EmployeeCustomRepository{...}	
+			
+		@Service
+		public class EmployeeCustomRepositoryImpl implements EmployeeCustomRepository {
+			@PersistenceContext
+			private EntityManager entityManager;
+			@Override
+			public List<Employee> getEmployeesWithCriteria(List<GenericCriteria> genericCriteriaList) {
+				CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+				CriteriaQuery<Employee> cq = cb.createQuery(Employee.class);
+				Root<Employee> root = cq.from(Employee.class);
+				...
+
+		{
+		    "query":"{
+			    employeesWithCriteria(criteria: [
+				{
+				    fieldName: \"firstName\"
+				    operator: \"startsWith\"
+				    value: \"first\"
+				    valueType: \"String\"
+				},
+				{
+				    fieldName: \"age\"
+				    operator: \"gt\"
+				    value: \"23\"
+				    valueType: \"Integer\"
+				}
+			    ]) {
+				id
+				firstName
+				lastName
+				age
+				salary
+			    }
+		    }"
+		}
+
+####################
+GRPC
+	-src/main/proto altına proto filelar yaratılır, bu dosyalarda messageların ve rpc servislerin tanımı bulunur. maven plugin ile compile time'de
+		proto -> java donusumu yapılır
+	-ServiceImplBase extend edilererek ilgili method override edilir
+	-ServerInterceptor implement edilerek header diye adlandırabilirleceğimiz metadata üzerinde işlem yapılabilir
+	-şu şekilde server başlatılır:
+		@Configuration
+		public class GrpcConfig {
+
+			@PostConstruct
+			public void serverStart() {
+				try {
+					logger.info("GrpcConfig", "Starting GRPC Server...");
+					// bu hali ile secure degil ve sadece localde kullanilir, 
+					// https://grpc.io/docs/guides/auth/#with-server-authentication-ssltls-5
+					final Server server = ServerBuilder.forPort(port)
+							// Enable TLS
+							//.useTransportSecurity(certChain, privateKey)
+							.addService(ServerInterceptors.intercept(greetingService, new HeaderServerInterceptor(failIfNoUser)))
+							.addService(chatService)
+							.addService(hugeService)
+							.addService(new HealthStatusManager().getHealthService()) // grpc health check
+							.build();
+
+					server.start();
+					logger.info("GrpcConfig", "GRPC Server started, listening on port {}", server.getPort());
+
+					Thread serverThread = new Thread(() -> {
+						try {
+							server.awaitTermination();
+						} catch (InterruptedException e) {
+							logger.error("GrpcConfig", "GRPC server awaitTermination interrupted", e);
+						}
+					});
+					serverThread.setName("grpc-server");
+					serverThread.setDaemon(false);
+					serverThread.start();
+
+				} catch (Exception e) {
+					throw new RuntimeException("Failed to start GRPC server", e);
+				}
+
+			}
+
+		}
+	-client tarafında da ManagedChannelBuilder.forAddress(name, port).usePlaintext().build() ile channel oluşturulur
+	-channel üzerinden newBlockingStub ya da newStub ile stub oluşturulur
+	-metadata gönderme ihtiyacı var ise: stub = stub.withInterceptors(MetadataUtils.newAttachHeadersInterceptor(extraHeaders));
+	-channel ve stub client tarafında reuse edilmelidir
+	-server tarafında field numberlar değiştirilmemeli, artık kullanılmıyorsa da reserve edilmeli (eski yeni tüm clientların düzgün çalışması için)
+	-blocking rpc de en az 5 kat hızlı olsada, daha yuksek perf için streaming rpc kullanılmalı
+
+####################
+PostgresDB vs MongoDB
+Table	---	 Collection
+Row 	--- 	Document
+Column 		--- 	Field
+CREATE TABLE users (	---	not required
+INSERT INTO users(	---	db.users.insert({user_id: "bcd001",
+SELECT *	---	db.users.find()
+
+SQL vs NoSQL
+DataType'a ve UseCase'e göre karar veririz:
+	Structured:(SQL) 
+		(UseCase)ACID Transation: Relataional Db (PostgreSQL, Oracle vs)
+		(UseCase)Analytics: Columnar Db
+	Semi-Structured: (NoSQL)
+		Dictionary: Key-value db kullanırız(Redis gibi), Cache ihtiyacı varsa in-memory db kullanırız (redis,memcached,hazelcast)
+		2D Key-Value: Wide Column db kullanırız (HBase, Cassandra), 
+			Audit Trail ihtiyacı varsa HyperLedger Fabric (Immutable)
+			Location ihtyacı varsa PostGIS, MongoDb(GeoJSON)
+		Entity-Relataionship: Graph db
+		Nested Objects (Xml,Json): MongoDb,Couchbase,Solr
+	Unstructured: Blob Storage
+
+MONGODB
+Create or insert operations add new documents to a collection. If the collection does not currently exist, insert operations will create the collection.
+In MongoDB, insert operations target a single collection. All write operations in MongoDB are atomic on the level of a single document.
+If an inserted document omits the _id field, the MongoDB driver automatically generates an ObjectId for the _id field.
+insertOne() returns a document that includes the newly inserted document's _id field value.
+insertMany() returns a document that includes the newly inserted documents _id field values. 
+The db.collection.find() method returns a cursor to the matching documents.
+Delete operations do not drop indexes, even if deleting all documents from a collection.
+
+
+## insert ##
+db.users.insertOne({name:"sue", age:26, status: "pending"})
+db.inventory.insertOne(
+   { item: "canvas", qty: 100, tags: ["cotton"], size: { h: 28, w: 35.5, uom: "cm" } }
+)
+db.inventory.insertMany([
+   { item: "journal", qty: 25, tags: ["blank", "red"], size: { h: 14, w: 21, uom: "cm" }, dim_cm: [5,10] },
+   { item: "mat", qty: 85, tags: ["gray"], size: { h: 27.9, w: 35.5, uom: "in" }, dim_cm: [15,30] },
+   { item: "mousepad", qty: 25, tags: ["gel", "blue"], size: { h: 19, w: 22.85, uom: "cm" }, dim_cm: [10,20] }
+])
+db.inventory.insertMany( [
+   { item: "journal", instock: [ { warehouse: "A", qty: 5 }, { warehouse: "C", qty: 15 } ] },
+   { item: "notebook", instock: [ { warehouse: "C", qty: 5 } ] },
+   { item: "paper", instock: [ { warehouse: "A", qty: 60 }, { warehouse: "B", qty: 15 } ] },
+   { item: "planner", instock: [ { warehouse: "A", qty: 40 }, { warehouse: "B", qty: 5 } ] },
+   { item: "postcard", instock: [ { warehouse: "B", qty: 15 }, { warehouse: "C", qty: 35 } ] }
+]);
+db.employee.findAndModify({query:{name:"Ram"}, 
+                            update:{$set:{department:"Development"}},
+                            upsert:true}) => no document matches the name “Ram”, so the findAndModify() method inserts a new document that contains 
+			    		two fields(i.e., name: “Ram” and department: “Development”) because the value of the upsert option is set to true.
+other insert methods:
+db.collection.updateOne() with upsert:true
+db.collection.updateMany() with upsert:true
+db.collection.findAndModify() with upsert:true
+db.collection.findOneAndUpdate() with upsert:true
+db.collection.findOneAndReplace() with upsert:true
+
+
+## query ##
+db.inventory.find( {} ) => find all
+db.users.find(
+     {age:{$gt: 18}}, => criteria
+     {name:1, address: 1} => projection (select columns plus _id)
+).limit(5) => cursor modifier
+db.inventory.find( { status: "A" }, { item: 1, status: 1 } ) => SELECT _id, item, status from inventory WHERE status = "A"
+db.inventory.find( { status: "A" }, { item: 1, status: 1, _id: 0 } ) => SELECT item, status from inventory WHERE status = "A"
+db.inventory.find( { status: "A" }, { status: 0, instock: 0 } ) => returns all fields except for the status and the instock fields in the matching documents
+db.inventory.find(
+   { status: "A" },
+   { item: 1, status: 1, "size.uom": 1 }
+) => starting with mongo 4.4 { item: 1, status: 1, size: { uom: 1 } }
+db.inventory.find( { status: "A" }, { item: 1, status: 1, instock: { $slice: -1 } => uses the $slice projection operator to return the last element in the instock array
+db.inventory.find( { status: { $in: [ "A", "D" ] } } ) => SELECT * FROM inventory WHERE status in ("A", "D")
+db.inventory.find( { status: "A", qty: { $lt: 30 } } ) =>  SELECT * FROM inventory WHERE status = "A" AND qty < 30
+db.inventory.find( { $or: [ { status: "A" }, { qty: { $lt: 30 } } ] } ) => SELECT * FROM inventory WHERE status = "A" OR qty < 30
+db.inventory.find( {
+     status: "A",
+     $or: [ { qty: { $lt: 30 } }, { item: /^p/ } ]
+} ) => SELECT * FROM inventory WHERE status = "A" AND ( qty < 30 OR item LIKE "p%") MongoDB supports regular expressions $regex queries to perform string pattern matches.
+db.inventory.find( { size: { h: 14, w: 21, uom: "cm" } } ) => query on embedded/nested document
+db.inventory.find( { "size.uom": "in" } ) => query on nested field
+db.inventory.find( { "size.h": { $lt: 15 } } )
+db.inventory.find( { tags: ["red", "blank"] } ) => all documents where the field tags value is an array with exactly two elements, "red" and "blank", in the specified order
+db.inventory.find( { tags: { $all: ["red", "blank"] } } ) => contains both the elements "red" and "blank", without regard to order or other elements in the array
+db.inventory.find( { tags: "red" } ) => all documents where tags is an array that contains the string "red" as one of its elements:
+db.inventory.find( { dim_cm: { $gt: 15, $lt: 20 } } ) => documents where the dim_cm array contains elements that in some combination satisfy the query conditions;
+	one element can satisfy the greater than 15 condition and another element can satisfy the less than 20 condition, or a single element can satisfy both
+db.inventory.find( { dim_cm: { $elemMatch: { $gt: 22, $lt: 30 } } } ) => documents where the dim_cm array contains at least one element 
+	that is both greater than ($gt) 22 and less than ($lt) 30
+db.inventory.find( { "dim_cm.1": { $gt: 25 } } ) => documents where the second element in the array dim_cm is greater than 25
+db.inventory.find( { "tags": { $size: 3 } } ) => documents where the array tags has 3 elements
+db.inventory.find( { "instock": { warehouse: "A", qty: 5 } } ) => documents where an element in the instock array matches the specified document
+db.inventory.find( { "instock": { qty: 5, warehouse: "A" } } ) => no result because reqires exact match, order is important
+db.inventory.find( { 'instock.qty': { $lte: 20 } } )
+db.inventory.find( { 'instock.0.qty': { $lte: 20 } } )
+db.inventory.find( { item: null } ) => matches documents that either contain the item field whose value is null or that do not contain the item field
+db.inventory.find( { item : { $exists: false } } ) => query matches documents that do not contain the item field
+
+var myCursor = db.users.find( { type: 2 } );
+while (myCursor.hasNext()) {
+   print(tojson(myCursor.next())); => or printjson(myCursor.next());
+}
+var myCursor = db.users.find( { type: 2 } );
+var documentArray = myCursor.toArray(); => or var myDocument = myCursor[3];
+var myDocument = documentArray[3];
+
+
+## update ##
+db.collection.updateOne() => update the first document matches
+db.users.updateMany(
+	{age:{$lt: 18}}, => filter
+	{$set:{status: "reject"}} => action
+	) 
+db.inventory.replaceOne(
+   { item: "paper" },
+   { item: "paper", instock: [ { warehouse: "A", qty: 60 }, { warehouse: "B", qty: 40 } ] }
+)
+db.inventory.updateOne(
+   { item: "paper" },
+   {
+     $set: { "size.uom": "cm", status: "P" },
+     $currentDate: { lastModified: true }
+   }
+) =>  $currentDate operator to update the value of the lastModified field to the current date. If lastModified field does not exist, $currentDate will create the field
+
+
+## delete ##
+db.inventory.deleteOne( { status: "D" } ) => deletes the first document where status is "D"
+db.collection.deleteMany({status: "reject"}) 
+
+
+db.collection.bulkWrite() =>  perform bulk insert, update, and remove operations
+try {
+   db.characters.bulkWrite([
+      { insertOne: { "document": { "_id": 4, "char": "Dithras", "class": "barbarian", "lvl": 4 } } },
+      { insertOne: { "document": { "_id": 5, "char": "Taeln", "class": "fighter", "lvl": 3 } } },
+      { updateOne : {
+         "filter" : { "char" : "Eldon" },
+         "update" : { $set : { "status" : "Critical Injury" } }
+      } },
+      { deleteOne : { "filter" : { "char" : "Brisbane"} } },
+      { replaceOne : {
+         "filter" : { "char" : "Meldane" },
+         "replacement" : { "char" : "Tanys", "class" : "oracle", "lvl": 4 }
+      } }
+   ]);
+} catch (e) {
+   print(e);
+}
+
+## text search ##
+Views do not support text search
+To perform text search queries, you must have a text index on your collection. A collection can only have one text search index, but that index can cover multiple fields.
+db.stores.insert(
+   [
+     { _id: 1, name: "Java Hut", description: "Coffee and cakes" },
+     { _id: 2, name: "Burger Buns", description: "Gourmet hamburgers" },
+     { _id: 3, name: "Coffee Shop", description: "Just coffee" },
+     { _id: 4, name: "Clothes Clothes Clothes", description: "Discount clothing" },
+     { _id: 5, name: "Java Shopping", description: "Indonesian goods" }
+   ]
+)
+db.stores.createIndex( { name: "text", description: "text" } ) => allow text search over the name and description fields. 
+db.stores.find( { $text: { $search: "java coffee shop" } } ) => find all stores containing any terms from the list "coffee", "shop", and "java"
+db.stores.find( { $text: { $search: "\"coffee shop\"" } } ) => find all documents containing "coffee shop"
+db.stores.find( { $text: { $search: "java shop -coffee" } } ) => find all stores containing "java" or "shop" but not "coffee"
+db.stores.find(
+   { $text: { $search: "java coffee shop" } },
+   { score: { $meta: "textScore" } }
+).sort( { score: { $meta: "textScore" } } ) => MongoDB will return its results in unsorted order by default. To sort the results in order of relevance score
+
+
+####################
+Apache Kafka vs RabbitMQ (https://www.cloudamqp.com/blog/2019-12-12-when-to-use-rabbitmq-or-apache-kafka.html)
+.RabbitMQ is a solid, general-purpose message broker that supports several protocols such as AMQP, MQTT, STOMP, etc. It can handle high throughput.
+A common use case for RabbitMQ is to handle background jobs or long-running task, such as file scanning, image scaling or PDF conversion. 
+RabbitMQ is also used between microservices, where it serves as a means of communicating between applications, avoiding bottlenecks passing messages.
+.Kafka is a message bus optimized for high-throughput ingestion data streams and replay. Use Kafka when you have the need to move a large amount of data, 
+process data in real-time or analyze data over a time period. In other words, where data need to be collected, stored, and handled. 
+An example is when you want to track user activity on a webshop and generate suggested items to buy. 
+Another example is data analysis for tracking, ingestion, logging or security.
+.In Kafka, Message queue is persistent (retention period ya da size limit aşılmadıkça kalır). RabbitMQ'da ise message comsume edildiğinde silinir. 
+.Rabbit use AMQP protocol (also some others),while kafka use custom protocol (TCP/IP),so you have a chance to replace rabbit with other message brokers supports AMQP
+.Rabbit exchangeler ile routing sağlar, kafka do not support routing.(you have to create dynamic routing which is not default) 
+In Kafka you will send all messages to one topic
+.Rabbit have priority queue, but in kafka A message cannot be sent with a priority level, nor be delivered in priority order.
+All messages in Kafka are stored and delivered in the order in which they are received regardless of how busy the consumer side is
+.RabbitMQ's queues are fastest when they're empty, while Kafka is designed for holding and distributing large volumes of messages. 
+Kafka retains large amounts of data with very little overhead.People that are trying out RabbitMQ are probably not aware of the the feature lazy queues. 
+Lazy queues are queues where the messages are automatically stored to disk, thereby minimizing the RAM usage, but extending the throughput time.
+if you think that your consumers will not consistently keep up with the speed of the publishers, we recommend that you enable lazy queues.
+.Consumer Scaling: caling up and down in RabbitMQ can be done by simply adding and removing consumers.
+In Kafka, the way to distribute consumers is by using topic partitions, where each consumer in a group is dedicated to one or more partitions.
+.Broker Scaling: Kafka is built from the ground up with horizontal scaling (adding more machines) in mind,
+while RabbitMQ is mostly designed for vertical scaling (adding more power
+.Monitoring: RabbitMQ has a user-friendly interface that lets you monitor and handle your RabbitMQ server from a web browser. 
+Among other things, queues, connections, channels, exchanges, users and user permissions can be handled (created, deleted, and listed) in the browser, 
+and you can monitor message rates and send/receive messages manually.
+For Kafka, we have a number of open-source tools for monitoring, and also some commercial ones, offering administration and monitoring functionalities. 
+
+https://www.redoxengine.com/blog/event-driven-architecture-with-kafka-and-rabbitmq/
+Replay: 
+Kafka is good — Kafka is designed to persist data and we could replay the data for the whole life of the topic
+RabbitMQ is bad — Rabbit is designed to delete the data once processed.
+Routing:
+Kafka is bad — Any consumer who is permitted to receive events for a Topic receives all events which have been produced for the topic. The consumer then chooses what data it wants to consume
+RabbitMQ is good – The exchange chooses what data is written to a queue and the consumer can only receive events which have been sent to it’s specific queue
+FIFO
+Kafka is good — Kafka producers can target specific partitions within a topic and enforce FIFO ordering on write. Consumers consume in FIFO order from a partition. This does imply that there only be a single consumer per FIFO partition. 
+RabbitMQ is bad — Because RabbitMQ consumers are competing consumers, event processing can be completed out of order if one event takes more time to complete than the next one.
+Priority: 
+Kafka is bad — Kafka doesn’t have any concept of event prioritization.
+RabbitMQ good – With RabbitMQ, we can specify which events in a queue are higher priority and consume them with that guidance.
+Latency: 
+Kafka is ok — Kafka consumers poll for new events from brokers. The polling interval can be tweaked down but that adds load.
+RabbitMQ is better – RabbitMQ pushes events to idle consumers as soon as they are received.
+
+####################
+MONOLITHIC ARCHITECTURE vs MICROSERVICE ARCHITECTURE
+single code base, long startup --- small unit of entire app, quick startup
+tightly coupled, no individiual resource allocation --- loosely coupled, paymenta az, searche cok resource allocate edilebiliyor
+data is centralized, need large teams --- data is federated, small teams develeop parallel
+MICROSERVICE: there are more services to monitor. As it is distributed system, it is inheritly complex model.
+	microservices rely on each other (direct rest call or via mq)
+MICROSERVICES vs SOA
+we have small and independently deployable components --- we have services for single focus but not independently deployable, we need to dep all app
+generally have single purpose and do it well --- include more business functionality and some sub systems
+communicationg through light-weight	such as http/rest/gRPC/graphQL --- sao based applications use ESB messaging protocol to communicate
+focused on decoupling --- centralized
+microservices focuses on bounded context --- soa encourages sharing of components and reusing them
+if one microservice has memory fault, only it will be affected --- if one slows down, all others could be affected
+loosely coupling is important (even if code duplicaiton) - reusability is important
+
+MICROSERVICES' BENEFITS
+It tackles the problem of complexity. It decomposes what would otherwise be a monstrous monolithic application into a set of services.
+It enables each service to be developed independently by a team that is focused on that service
+The Microservices Architecture pattern enables each microservice to be deployed independently.
+Finally, the Microservices Architecture pattern enables each service to be scaled independently.
+MICROSERVICES'DISADVANTAGES
+Debugging and testing the entire application is difficult, bec there are many microservice interactions
+Data consistency: Monolith applications having a single relational database has the benefit of ACID.
+
+https://developers.redhat.com/articles/2021/09/21/distributed-transaction-patterns-microservices-compared
+Assume we have MicroserviceA and MicroServiceB, A operates on its own db and than publishes an event to ping B to operate
+	The modular monolith: you have to convert both microservices (Service A and Service B) into library modules that can be deployed into a shared runtime. 
+	The two-phase commit architecture: you need a distributed transaction manager such as Narayana and a reliable storage layer for the transaction logs. 
+		You also need XA-compatible data sources that are capable of participating in distributed transactions, such as RDBMS, message brokers, and caches.
+	Orchestration: one of the services acts as the coordinator and orchestrator of the overall distributed state change. 
+		The orchestrator uses its local database to keep track of state changes, and it is responsible for recovering any failures related to state changes.
+		In terms of implementation, we could set this up with synchronous interactions, or using a message queue in between the services 
+	Choreography: is a style of service coordination where participants exchange events without a centralized point of control. 
+		With this pattern, each service performs a local transaction and publishes events that trigger local transactions in other services.
+	Parallel pipelines:  Choreography creates a sequential pipeline of processing services, 
+		so we know that when a message reaches a certain step of the overall process, it has passed all the previous steps. 
+		In this scenario, Service B could process a request regardless of whether Service A had processed it or not.
+		With parallel pipelines, we add a router service that accepts requests and forwards them to Service A and Service B through a message broker
+	Spring data chained transaction manager
+
+####################
+MICROSERVICE ARCHITECTURE AND DESIGN PATTERNS
+	Database per Microservice
+		Database per service
+		Shared database is an anti-pattern. (in this case monolith may be the best case, consider if we need microservices)
+	Event Sourcing
+		Event Sourcing is based on the idea that any change in an entity's state should be captured by the system. 
+		A new event is added to the sequence of events every time an object's state changes. 
+		By replaying the occurrences of an entity, its current state can be reconstructed.
+		An event store is used to keep track of all of your events. The event store serves as a message broker as well as a database of events
+		Key problems: Design eventually consistent business logic and atomicly update db and publish event		
+		event_table: event_id + event_type + event_data + entity_id + entity_type + publish_status
+		1.polling technique: when there is an event, this event is going to be persisted (events_table with published=0 state). 
+			Then event publisher "select * from events_table where published=0 order by id asc" and publish to the message broker and set published=1
+		2.transaction log tailing: tail the logs of database anf publish to the mq
+		using snapshots to improve performance: While Order aggregate has a few events, Account aggregate has many events. So Creating Order object just via
+			events is easy but, this is not the same case for Account. If we use snapshots for this entity, 
+			we may create this object from this snapshots plus
+			events after snapshot (snapshot row will include: json representation of the object + event id + entity type+ entity id)
+		idempotent message processing: message broker may send the same messages multiple times. 
+		So keeping a processed_messages table at service side (which is comsuming messages), 
+		will make this service idempotent and it will be safe to send duplicate messages (assuming all messages have an id)
+		Benefits: reliably publishes domain events (audit log is guarenteed and can be used for analytics and monitoring) 
+			and preserves the history of aggregates, debugging (get events from prod and debug them in test)
+		Drawbacks: learning curve (you must rewrite business logic), message-based app complexity, 
+			domain model upgrades will lead to event version upgrades so
+			developer should overcome tihs problem when they are loaded from event store (by upgrading events to the latest version), 
+			deletion of an aggregate is a soft delete but it conflicts with General Data Protection Regualation 
+			(an app must have the ability to forget user info) 
+			Encyription key may be used to encrypt and user info and delete this key when user is deleted (or a UUID, 
+			map email info with uuid and delete this map), 
+			querying the event store (so use CQRS)
+	CQRS (Command Query Responsiblity Segregation)
+		 Commands - Change the state of the object or entity
+		 Queries -  Return the state of the entity and will not change anything
+		 In example of reading database, if your application requires some query that needs to join more than 10 tables, 
+		 this will lock the database due to latency of query computation. Also when performing crud operations 
+		 we would need to make complex validations and process long business logics,so this will cause to lock database operations.
+		 So separate reading database and the writing database with 2 database. 
+		 By this way we can even use different database for reading and writing database types 
+		 like using no-sql for reading and using relational database for crud operations.
+		 So we should sync these 2 databases and keep sync always.This can be solved by using Event-Driven Architecture. 
+		 when something update on write database, it will publish an update event and this will be consumed by the read database and sync data
+		 Peki ya Consistency? yukarıda işlem(process’in kapsamına göre değişir) çok uzun sürmeyecektir ama yapılan değişiklik diğer db’lere(read) 
+		 anında yansımayıp belli bir süre sonra kesinlikle yansıyacaktır. Biz de buna Eventual Consistency diyoruz.
+	Saga is one of the best solutions to keep consistency with data in distributed architecture without having the ACID principles.
+		A saga is a sequence of local transactions in each of the participating services.
+		saga participants communicate using asynchronous messaging: either events or asynchronous request/response.
+		In order for the communication to be reliable, it’s essential that the saga participants use a message broker that guarantees at-least-once delivery 
+		and has durable subscriptions. That’s because at-least-once delivery and durable subscriptions ensure that a saga completes even if 
+		a participant is temporarily unavailable. A message will sit in the message broker’s channel (e.g. queue or topic) 
+		until the participant is able to successfully process it.
+		Each step of saga updates a database (e.g. a business object or saga orchestrator) and sends a message/event. These two actions must be done atomically 
+		in order to avoid data inconsistencies and bugs. For example, if a service sent a message after committing the database transaction 
+		there is a risk of it crashing before sending. Similarly, if a service sends a message in the middle of a database transaction 
+		there is a risk that the transaction will be rolled back. In both scenarios, the application is left in an inconsistent state.
+		In order to avoid this problem, a saga must use one of the following patterns:
+			Transactional Outbox pattern - publish a message by inserting it into an OUTBOX table as part of the database transaction. 
+				A separate process (e.g. the Eventuate CDC) retrieves the message from the OUTBOX table and sends it to the message broker.
+			Event Sourcing pattern - uses events to persist domain objects and thereby combines updating the database and publishing events into a single,
+				inherently atomic operation.
+		Compensatable transactions: transactions that can be rolled back (bu ondoing the previos stuff, bec there is no real rollback). Each step of a saga that is 
+			followed by a step that can fail must have a corresponding compensating transaction.
+		Pivot transaction: the go/no-go point in a saga
+		Retryable transactions: transactions that follow the pivot transaction and guarenteed to succeed
+		Choreography : there is no central orchestration.Choreography is an event-driven approach. 
+			Each service in the Saga carries out its transaction and publishes events.
+			The other services respond to those occurrences and carry out their tasks. Works well for simple cases
+			Step	Triggering Event	Participant	Command			Events
+			1	-			OrderService	createPendingOrder()	OrderCreated
+			2	OrderCreated		CustomerService	reserveCredit()		CreditReserved,LimitExceeded
+			3a	CreditReserved		OrderService	approveOrder()		-
+			3b	LimitExceeded		OrderService	rejectOrder()		
+		Orchestration : better to use for complex scenarios. Orchestrator saga should be designed as a state machine 
+			(so each event/action will result in a state transition)
+			 The saga orchestrator communicates with the participants using request/asynchronous response-style interaction.
+			  To execute a saga step, orchestrator sends a command message to a participant telling it what operation to perform. 
+			  After the saga participant has performed the operation, it sends a reply message to the orchestrator. 
+			  The orchestrator then processes the reply message and determines which saga step to perform next.
+			  	1.The Order Service handles the POST /orders request by creating the Create Order Saga orchestrator
+				2.The saga orchestrator creates an Order in the PENDING state
+				3.It then sends a Reserve Credit command to the Customer Service
+				4.The Customer Service attempts to reserve credit
+				5.It then sends back a reply message indicating the outcome
+				6.The saga orchestrator either approves or rejects the Order
+		Handling the lack of isolation (because local trasactions are commited immediately, other participants of the saga view this data)
+			so saga is consider to be ACD (not ACID). Potential anomalies: 
+			Lost updates (order create + cancel + approve -> overrides canceled order ), dirty reads, nonrepeatable reads
+			Use *_pending state (Semantic Lock): Sagas that updates Order, begin by setting the state as approval_pending, 
+			this state tells other transactions that the order is being updated and act accordingly (for example cancel can only be called if the
+			order is approved, when called while pending we can raise an error saying try later,so there will be no lost updates)
+			For example, the happy path for the Create Order saga is as follows:
+				Order Service : createPendingOrder()
+				Customer Service : reserveCredit()
+				Order Service : approveOrder()
+			Similarly, the flow when there is insufficient credit is as follows:
+				Order Service : createPendingOrder()
+				Customer Service : reserveCredit()
+				Order Service : rejectOrder()
+			-Semantic lock: compensatable transactions use a flag in the record to indicate record is not commited finally and can change
+			-Commutative updates: design for update operations can be made any order, so there will be no update overrides
+			-Pessimistic view: to minimize dirty-read risk. Reorder the saga participants to achive this goal
+			-Reread value: prevents lost updates. Before update re-read the record again
+			-Version file: record the operations as they arrived and process them in this order
+			-By value: means by business value. Execute low-risk requests using saga, bu high-risk ones with ditributed transactions
+		https://chrisrichardson.net/post/microservices/2019/07/09/developing-sagas-part-1.html ve devami...		
+	BFF: the goal of this architecture is to decouple the front-end apps from the backend architecture.
+	API Composition: Assume we have a complex query with joins but inner queries will be executed on different databases. In this case we will have
+		microservices for inner queries and an api composer which invokes the services that own the data and performs an in-memory join of the results.
+		this pattern may not be accurate for all scenarios. (api composer may be a microservice, api gateway or a client application)
+		api composers should be implemented in reactive way, 
+		bec calls to providers services should be done parallel (ex java CompletableFuture or Observable)
+	API Gateway :sits between the client apps and the microservices and it serves as a reverse proxy, forwarding client requests to services. 
+		Authentication, SSL termination, and caching are some of the other cross-cutting services it can provide.
+	DDD (Domain Driven Design): is an approach to develop software for complex problems by deeply connecting the implementation 
+		to an evolving model of the core business concepts. https://towardsdatascience.com/what-is-domain-driven-design-5ea1e98285e4
+		Domain: Sales, Loans, Accounting(muhasebe) If you are developing an application for sales, it is best to look at it from “sales”. 
+			The language of the developed application will be aligned with the business and the application will make more sense overall
+		Bounded Context: It gives more information on how to deal with large domain models and a large organization. 
+			To deal with a large model you can divide the model into different zones which we call a “Bounded Context”.
+			An organization can be split into a sales department and a support department, each operating within its context. 
+			By working in a bounded or limited context the work becomes easier and better organized
+		Ubiquitous Language: is a language shared by the development team and the domain experts.
+			The language has to be used not only in the domain model, but also in the code of the application.
+			If the development team and the business team wouldn’t work together, the chance would increase they’d develop their language. 
+			This could introduce a language barrier between them
+		Anti Corruption Layer: To prevent two domains to pollute each other, you have to create a boundary between them. 
+			Each domain has its ubiquitous language and its domain model. An anti-corruption layer translates between the two domain models.
+			The layer can be uni or bi-directional and is often implemented by well-known patterns (e.g. adapter, facade etc)
+		Entities: Entities are a combination of data and behavior, like a user or a product. They represent the central elements of the model. 
+			They need to have an identity like a customer has its customerId. These Entities contain logic of the core-domain.
+			Entities have id. EX: Account, Customer, Order ...
+		Value objects: Value objects have attributes, but can’t exist on their own. They dont have any id.
+			For example: the shipping address can be a value object,for example money object, has amount and currency
+			These Value Objects don’t have an identity and mostly only contain validation logic for its attributes. 
+			Value Objects do not live on their own and belong to some Entity. 
+		Aggregate: An aggregate is a domain-driven design pattern. It’s a cluster of domain objects (e.g. entity, value object), treated as one single unit. 
+			A car is a good example. It consists of wheels, lights and an engine. They conceptually belong together.
+			Every aggregate has an aggregate root. In our example, this might be the chassis number. 
+			It ensures the integrity of the aggregate as a whole. Every aggregate denotes a transactional boundary 
+			An aggregate is a group of entities that is guaranteed to be consistent between atomic changes to it. 
+			A classic example is an Order with OrderItems and Address.
+			A property on Order (for example, numberOfItems is consistent with the actual number of OrderItems) remains consistent as changes are made.
+			aggregate is a grapgh consisting of a root entity, oen or more other entities and value objects
+			Domain model = collection of loosely connected aggregates, so you can easily partition into microservices. For example:
+				OrderService, ProductService and CustomerService
+			Domain Events: records state changes, they have: event metadata(id,senderId...),attributes required by aggreagte (productId)
+				enrichments for consumer (productName, productPrice). OrderCreatedEvent, ProductAddedToCart
+			Commands:(CreateCusotmerCommand) Created by a service from incoming request, processed by an aggregate,immutable,contains value objects for:
+				validationg request, creating event, auditing user activities
+			Code: Customer(aggregate) class has these methods to process command and create event and apply event
+				public List<Event> process(Command cmd)
+				public void apply(Event)
+			aggregate rules:
+			-refrence only the aggregate root: root entity of the aggregate is the only part can be referenced by the class outside of the aggregate.
+				A client can only update an aggregate by invoking a method on the aggregate root 
+				(by this way all business logic/validation etc will be applied)
+			-interaggreagte references must use primary keys: For example, 'order' references its 'consumer' with consumers' id 
+			rather than consumer itself
+				this means Order class will have a consumerId field, not Consumer field
+				(OrderItem table has productId column that refers product aggregate, Order table has customerId that refers customer )
+				But for example OrderItem can contain partial copy of product's data (productId + productName + productPrice)
+					so you dont have to load the product just to get the name
+			-one transaction creates or updates one aggregate, because you have one microservice for one aggregate
+				event driven eventual consistency between aggregates
+
+####################
+KUBERNETES
+https://hello-tanzu.vmware.com/kubernetes-in-five-minutes/
+
+DOCKER is standalone app which can be installed on any computer to run containerized applications.
+	You can see it as a light-weight VM or a software packaging and delivery platform
+	is a container platform which means it runs containerized applications.
+KUBERNETES can allow you to automate rollouts and rollbacks, automate networking, loadbalancing, security, horizontal scaling accross all the nodes.
+Why multiple nodes int the first place -> robustnes: your app is online, even if some nodes go offline (high availablity)
+scalablity: if workload increases, spawn more containers or add nodes to your current cluster
+KUBERNETES can work with any containerization technology bu Docker is the most popular. Docker have its own orchestration engine
+	named Docker Swarm by kubernetes&docker benefits more. Kubernetes is an opensource system for automating deployments
+	scaling and managemnet of containerized applications. Kubernetes supports several container runtimes: Docker, containerd...
+
+buraya bak ==> https://kubernetes.io/docs/concepts/overview/components/
+KUBERNETES COMPONENTS:
+	messaging: apache kafka, rabbitMQ
+	service registry/discovery: hashicorp consul/istio
+	secret management: cyberArk + conjur/twistlock , hashicorp vault
+	pod network: kube router/calico (kube router default gelen ama yetersiz)
+	ingress controller: nginx/traefic/istio
+	logging: 
+		splunk
+		filebeat: Uygulamalar loglarını stdout'a yazarlar, containerlar içindeki dosyalarda bulunan bu loglar toplanır ve log işleme aracına letilir
+		+ logstash: Uygulama logları işlenir ve istenilen formata gelen loglar elasticsearch'e iletilir
+		+ elastic search 
+		+ kibana: Kibana ile elasticsearch üzerindeki loglar izlenebilir
+	tracing: 
+		prometheus: Sistem metrikleri prometheus ile toplanıp çatı izleme aracına iletilir (mikrofocus opsbridge)
+		kiali/jagger/zipkin: Sidecar'lar trafiği dinleyip izleme aracına iletirler ve istekler uçtan uca izlenebilir
+		dynatrace
+	liveness/readiness probe: we mainly depend on spring boot actuator here
+
+is an open-source system for automating deployment, scaling, and management of containerized applications.Kubernetes will take care of the shared infrastructure 
+for your containers. For a very high-level view think of a k8s cluster as composed of control plane nodes 
+and worker nodes. For high availability, the control plane runs on multiple nodes. A control plane is the brain of the cluster and it will manage the worker nodes accordingly.
+The nodes are typically responsible for running the workloads
+A robust cluster will have multiple Control Plane nodes, preferably in different geographical locations. This is usually taken care of by the cloud provider 
+if you are running in the cloud. For example, In GoogleCloudPlatform a GoogleKubernetesEngine regional cluster has three control plane nodes in distinct zones 
+to guarantee high availability.
+The control plane runs five major components as shown in the diagram below:
+	API Server: is a process running the Kubernetes API, which follows the REST design pattern. 
+		It lets you query and modify the state of objects within Kubernetes (pods, nodes ...)
+		Kubernetes components only communicate with API Server. They don’t talk to each other directly.
+		When you create a Kubernetes resource using kubectl (or by directly calling API) then the API server performs many operations:
+			Authentication plugins: First, the API server authenticates the request using one of many authentication plugins (X.509 client certificates,
+				static HTTP bearer tokens, and OpenID Connect)
+			Authorization plugins: After a request is authenticated, the API server does an authorization check
+			Admission Controller: Admission controller plugin intercepts requests (create, modify or delete) before persisting requests into etcd. 
+				The admission controller can mutate or validate the request (initialize missing fields, configure the default value or even override fields)
+	Controller Manager: several things within Kubernetes require comparing the current state with the desired state. If there are any deviations 
+		the controller manager will execute a set of actions to correct them. this means that the process is running an infinite loop and executing the checks. 
+		Pretty much everything in Kubernetes that requires an action is a controller.(replication manager,deployment controller,job controller,custom controller ...)
+	Cloud Controller Manager: It’s a controller manager for cloud provider-specific implementations. There are actions in Kubernetes that depend on 
+		the environment k8s is running in. For example, say you want to expose your application to the internet. Typically, this requires a Load Balancer 
+		which is very platform-dependent and will change whether you are running on GCP, AWS or Azure. Each cloud provider that wants to enable Kubernetes 
+		to consume their cloud resources has to provide a basic set of controllers that teach Kubernetes how to use their resources.
+	Scheduler(kube-scheduler): assign Pods to worker nodes and will guarantee your pods have a home
+		The Kube scheduler watches for newly created pods, which are not assigned to any node, and selects a node for them to run on.
+		When a pod is first created it usually doesn’t have a nodeName field. The nodeName field indicates the node on which pod to run.
+		The Scheduler then selects the appropriate node for the pod and updates the pod definition with nodeName. 
+		After the nodeName is set the running on the node is notified which begins to execute the pod on that node.
+		node selection:
+			Can the node fulfill the hardware resources needed by the pod?
+			Does the node have a label that matches the node selector in the pod specification?
+	etcd:  the cluster storage/database — this is where Kubernetes objects are stored. etcd is a distributed key-value store that prioritizes consistency and availability
+		The Kubernetes API server is the only component that talks to etcd directly.
+These five components enable k8s to interact with the system resources and provide a solid platform for your containers
+In addition to the components that run on the master node (control plane), few components run on every worker node. 
+These components provide an essential feature that is required on all nodes.
+	Kubelet: The Kubelet is the node agent that runs on all machines that are part of a Kubernetes cluster. It is responsible for everything running on a worker node
+		It registers the node it’s running on by creating the Node resource in the API server. 
+		The Kubelet acts as a bridge that joins the available CPU, disk, and memory for a node into the large Kubernetes cluster.
+		The Kubelet also communicates the state of the containers to the API server so that the controller can observe the current state of these containers.
+		The Kubelet is also responsible for the health check on the machines
+	Kube Proxy:  kube-proxy is responsible for service discovery and managing Kubernetes internal networking.
+		The Kubernetes service is the way to expose an application running on a set of pods as a network service
+		Kubernetes assigns a single DNS name for a set of pods and load-balances the requests against them
+		The kube-proxy purpose is to make sure clients can connect to the Kubernetes service.
+		The kube-proxy is always watching the API server for all services in the Kubernetes cluster. When a Kubernetes service is created 
+		it’s immediately assigned a virtual IP address i.e. it’s not assigned to any network interface. The API server then notifies all kube-proxy agents 
+		about the new service. The kube-proxy sets up a few iptables rules to redirect client calls to a service to the backing pod.
+	Container run time:The container runtime is the software that is responsible for running containers. 
+		Kubernetes supports several container runtimes: Docker, containerd, CRI-O, 
+	
+>kubectl: We can interact with the cluster using a handy CLI called kubectl. It mainly talks to the API Server and allows us to do several tasks within the cluster. 
+The API Server accepts JSON only, but kubectl also understands YAML.
+>Node: we need a place to run our applications and workloads — that is the main job of the Worker Nodes. It isn’t a good idea to run workloads in the control plane node.
+A worker node is essentially a VM (compute) that has two Kubernetes processes (kubelet and kube-proxy),and a container runtime. Before anything can happen, 
+the node has to join the cluster so the control plane knows it can run your workloads. Kubernetes control plane will then manage it and give it instructions 
+When a node joins the cluster (kubelet says hi to the API Server) their state is tracked by an object that represents the node. ( node.yaml => kind: Node)
+You also have the option to register nodes manually if necessary, which you might need to do when you are creating your cluster outside of cloud providers.
+A neat utility for that purpose is the kubeadm. Using kubectl we can ask the cluster for the state of our nodes. (kubectl get nodes)
+>Pod(application workloads): They are the smallest deployable object. Their goal is to provide a runtime environment for your containers. 
+Every running container in a k8s cluster is inside a Pod. 
+A Pod can have multiple containers if necessary. Containers in the same Pod are tightly coupled and share resources. (networking and storage, security rules, etc. )
+There is only one IP assigned to a Pod. The consequence is that containers within a Pod can communicate through localhost. 
+kubectl create -f pod.yaml
+kubectl get pods
+	apiVersion: v1
+	kind: Pod
+	metadata:
+	  name: nginx
+	spec:
+	  containers:
+	  - name: nginx
+	    image: nginx:stable-alpine
+	    ports:
+	    - containerPort: 80
+Init Containers: They run before the regular containers in the pod get started. Unlike the regular containers, these should always run to completion 
+and exit successfully or the Pod will enter the Failed state
+Ephemeral Containers: These are useful for troubleshooting and interactive shells for short-lived operations
+First, we create the Pod. In this stage, Kubernetes fetches the container from the registry. Then k8s ask a node to run the Pod; which causes the creation of necessary 
+constructs around networking and storage. Then it runs the container in that space. If fetching the container fails, the Pod will assume the “UNKNOWN” state.
+The process in the container will be in the foreground until completion or until an external command terminates it. This is the Running state. 
+If the Pod fails the state is set to FAILED. If it runs successfully, it assumes the status of TERMINATED.
+pod lifecycle:
+	The user runs a kubectl create command to create the object (for example: kubectl create -f pod.yaml)
+	kubectl makes a call to the API Server to create the object
+	API Server saves the Object in etcd
+	Scheduler detects a new Pod was created and is not assigned to a node
+	The scheduler then updates the Pod object with the chosen node. It takes into account several constraints to define which node gets the Pod.
+	kube-controller-manager then detects that the Pod desired state doesn’t match the current state and makes the necessary calls to the API Server
+	Which in turn triggers an API call from the API Server to kubelet, in the selected node, to create the actual Pod
+	As part of setting up the Pod, networking kube-proxy does the required changes to the OS via the package filtering layer
+once the Pod gets killed, or runs into a failure, it will simply sit in the terminated or failed state and will not be restarted. That is something deployments solves.
+>Deployment: deployments allow k8s to have desired state rules on a Pod or group of Pods. Kubernetes Deployment also makes use of other k8s objects 
+to further enhance functionality. One super common construct is the “ReplicaSet”, which defines how many copies of the same Pod should be created by this deployment
+spec.template is the same pod definition above. this part contains the definition of the actual Pod.
+kubectl create -f deploymemt.yaml
+kubectl get deploy, kubectl get rs, kubectl get pods
+	apiVersion: apps/v1
+	kind: Deployment
+	metadata:
+	  name: nginx-deployment
+	  labels:
+	    app: nginx
+	spec:
+	  replicas: 3
+	  selector:
+	    matchLabels:
+	      app: nginx
+	  template:
+	    metadata:
+	      labels:
+		app: nginx
+	    spec:
+	      containers:
+	      - name: nginx
+		image: nginx:stable-alpine
+		ports:
+		- containerPort: 80	
+>Services: There are multiple ways to expose your application using k8s. Services are one of the simple ways we can do it. Think of the Service object as 
+a networking abstraction. It provides a way to expose an application running in one or more pods via a single IP. 
+At a lower level, a service contains a collection of endpoints.  An endpoint is a simple object with the IP of a Pod.
+you don’t need to worry about creating endpoints since that is done behind the scene (kubectl describe endepoints nginx-svc)
+The service object will provide us with an IP and a DNS entry on the cluster DNS server to facilitate service-to-service communications.
+kube-dns is a component that is often deployed in the cluster. Although not a mandatory nor a core component, it’s essential to clusters running multiple services. 
+It can be replaced with other DNS services if desired. A popular alternative is coreDNS. It provides name resolution within the cluster, including services domain names.
+for example: nginx-svc.default.svc.cluster.local
+Service object is quite simple and does not allow for complex traffic rules.There are other objects that we can use for that purpose. A popular option is the Ingress object.
+types of services:
+NodePort: this actually blocks a specific port in the node and lets traffic reach the service through the node IP directly.
+ClusterIP: this lets the cluster assign an IP to the service from its services IP pool
+LoadBalancer: this will actually use the cloud controller manager to create a load balancer on the infrastructure provided by the cloud provider
+kubectl create -f service.yaml
+kubectl get svc, kubectl get service, kubectl get ep, kubectl get pods -o wide
+	apiVersion: v1
+	kind: Service
+	metadata:
+	  name: nginx-svc
+	spec:
+	  type: LoadBalancer
+	  selector:
+	    app: nginx
+	  ports:
+	    - name: http
+	      protocol: TCP
+	      port: 80
+	      targetPort: 80
+
+
+Docker and Kubernetes Commands
+https://docs.docker.com/engine/reference/commandline/cli/
+https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands
+
+docker images are just packages/templates and containers are running instances of images which are isolated and have their own environments.  An image becomes a container 
+when the docker run command is executed. Docker containers have their own processes/services, networking interfaces, mounts (completely isolated)
+(just like VM's but docker containers share the same OS kernel, on the other hand, VMs have their own operating systems)
+Docker volumes : are the preferred mechanism for persisting data generated by and used by Docker containers. In order to be able to save (persist) data and also to share data 
+between containers, Docker came up with the concept of volumes.
+
+docker ps -a
+docker stop containerName(ya da containerId)
+docker logs containerName
+docker rm containerName
+docker rmi imageName
+docker run -v c:/mysqllib:/var/lib/mysql --name=my_datastore -d busybox (detached: container continues to run until stopped but doesn't respond to commands run on cmd)
+docker run --name mynginx1 -p 1111:80 -d nginx (port forwarding localhost:1111 -> 80)
+docker run -e "SPRING_PROFILES_ACTIVE=dev" -p 8080:8080 -t springio/gs-spring-boot-docker (containerı spring profile ile başlatma)
+docker build -t tagName .   (bulundugum directoryi soruce olarak kabul et tagName ile docker image olustur)
+docker inspect mynginx1 (mynginx1 containerı için info listeler)
+docker exec -it podName -c containerName /bin/bash => if the pod is multi-container 
+docker run --rm -it -p 8080:8080 yourName  (--rm removes the container as soon as you stop it)
+docker system prune => remove all stopped containers, dangling images, dangling caches etc
+docker-compose up --build (rebuild the container)
+
+
+kubectl get nodes
+kubectl run nginx --image=nginx => start an nginx pod by downloading image from docker hub
+kubectl get pods
+kubectl describe pods => detailed info about the pod and logs
+kubectl describe pod myapp-pod 
+kubectl get pods -o wide => lists also pod ip and node information
+kubectl get pods --watch => watch the console online
+kubectl port-forward pod/nginx 8080:80
+kubectl .. -n namespace => to work in a specific namespace
+kubectl get ... --all-namespaces => to see resources in all namspaces
+kubectl create -f pod-definition.yml => to create pod
+kubectl create -f C:\Users\ikmsdtg\gitRepo\k8s-demo\deployment-definition.yml => to create deployment. After creating deployment, replicaset and pods are also created.
+kubectl rollout status deployment/myapp-deployment ("rolling update" is the default deployment strategy. recreate: hepsini down edip sonra up)
+kubectl rollout history deployment/myapp-deployment 
+kubectl rollout undo deployment/myapp-deployment  => rollback
+
+kubectl create is what we call Imperative Management. On this approach you tell the Kubernetes API what you want to create, replace or delete, 
+not how you want your K8s cluster world to look like.
+kubectl apply is part of the Declarative Management approach, where changes that you may have applied to a live object (i.e. through scale) are "maintained" 
+even if you apply other changes to the object.
+If the resource exists, kubectl create will error out and kubectl apply will not error out.
+
+-depoyment.yaml (we want 4 replicas, maxSurge: 2 => we'll have max 6 running pods, maxUnavailable: 1 => we'll have at least 3 running pods)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rolling-nginx
+spec:
+  replicas: 4
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      name: nginx
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.8
+
+-service.yaml (this service looks for the deployments with run=nginx label and exposes port 80 of them)
+apiVersion: v1
+kind: Service
+metadata:
+  name: mywebserver
+spec:
+  selector:
+    run: nginx
+  ports:
+  - port: 80
+    name: whatever
+  type: NodePort
+  
+
+HELM CHART: (version Helm 3)
+Helm is an application package manager for Kubernetes (think apt or yum or chocolatey for Windows). Helm downloads, installs and deploys apps for you on the Kubernetes.
+	You can install, upgrade, and delete installation.
+	You can search the repository to find what Kubernetes applications are available.
+	You can configure applications prior to installing them.
+	You can see what is already installed and how it is configured.
+running "helm create app" creates:
+	app/ 
+	   charts/ # => a directory containing any charts upon which this chart depends.
+	   templates/  => contains all the manifest files needed for Kubernetes application deployment. 
+	   .helmignore # 
+	   Chart.yaml => a YAML file containing information about the chart
+	   values.yaml => the default configuration values for this chart
+
+Chart.yaml
+	apiVersion: v2 => means Helm 3
+	name: app
+	description: A Helm chart for Kubernetes
+	type: application => can be either ‘application’ or ‘library’. 
+	version: 0.0.1
+	appVersion: "0.0.1"
+Values.yaml
+	replicaCount: 2
+	uat:
+	  config:
+	    datasourceUser: myuatuser
+	prod:
+	  config:
+	    datasourceUser: myproduser
+deployment.yaml	    
+	apiVersion: apps/v1 
+	  kind: Deployment 
+	  metadata: 
+	    name: {{ include "app.fullname" . }} 
+	    labels: 
+	      {{- include "app.labels" . | nindent 4 }} 
+	  spec: 
+	    {{- if not .Values.autoscaling.enabled }} 
+	    replicas: {{ .Values.replicaCount }} {{- end }}
+	    
+helm install my-app app => This will install a chart app with the installation name my-app.
+helm uninstall my-app => To uninstall an installation. This will remove all resources associated with a particular installation.
+kubectl get deployment 
+	NAME   READY   UP-TO-DATE   AVAILABLE   AGE 
+	my-app 1/1     1            1           9s
+helm repo add bitnami https://charts.bitnami.com/bitnami => using the MySQL chart published by Bitnami, you need to tell Helm about the Bitnami
+helm repo list  => list all repositories
+helm search repo mysql => search chart
+helm install appdb bitnami/mysql  => install mysql chart, helm install <installation_name> <chart_name> 
+helm inspect values bitnami/mysql => default values of the Helm installation
+helm install appdb bitnami/mysql --values values.yaml => override the default values, can be used with helm upgrade 
+helm upgrade appdb bitnami/mysql --values values.yaml --set auth.rootPassword=$ROOT_PASSWORD  => override a value
+	NAME   NAMESPACE  REVISION  STATUS    CHART        APP VERSION 
+	appdb  default    2         deployed  mysql-8.7.0  8.0.25
+When you run the helm install command, Helm creates a release record. These release records are stored as Kubernetes secret.
+kubectl get secret (to get more info: kubectl describe secret sh.helm.release.v1.appdb.v2)
+	NAME                          TYPE                                  DATA   AGE
+	appdb-mysql                   Opaque                                2      49m
+	appdb-mysql-token-q9d8f       kubernetes.io/service-account-token   3      49m
+	default-token-mn2tf           kubernetes.io/service-account-token   3      11d
+	sh.helm.release.v1.appdb.v1   helm.sh/release.v1                    1      49m
+	sh.helm.release.v1.appdb.v2   helm.sh/release.v1   
+helm history => to see the status of chart releases (version 1 is marked superseded and version 2 is marked deployed)
+	REVISION        UPDATED                         STATUS          CHART           APP VERSION     DESCRIPTION
+	1               Tue Jul  6 10:22:22 2021        superseded      mysql-8.7.0     8.0.25          Install complete
+	2               Tue Jul  6 10:22:33 2021        deployed        mysql-8.7.0     8.0.25          Upgrade complete
+helm rollback <revision> => to roll back to the previous revision
+Helm provides you the ability to debug helm install and upgrade command. You can do a dry run before applying changes to the Kubernetes using flag --dry-run
+While installing a release Helm roughly performs these steps (The dry run performs all steps except step 5)
+	Load entire chart including dependencies.
+	Parse the value.
+	Execute template and generate YAML. In this step Helm can contact API Server.
+	Parse the YAML into the Kubernetes object.
+	Send to Kubernetes.
+During dry run Helm contacts Kubernetes API Server for validation. You must have a Kubernetes cluster credential to execute a dry run.
+If you don’t have credentials for the Kubernetes server, you can use the helm template (helm template  appdb bitnami/mysql --values values.yaml)
+
+
+####################
+SERVICE MESH
+The service mesh pattern is focusing on managing all service-to-service communication within a distributed software system.
+A service mesh consists of two high-level components: a data plane and a control plane. 
+.the data plane “does the work” and is responsible for “conditionally translating, forwarding, 
+and observing every network packet that flows to and from a [network endpoint].” 
+In modern systems, the data plane is typically implemented as a proxy, (such as Envoy, HAProxy, or MOSN), 
+which is run out-of-process alongside each service as a “sidecar.” Linkerd uses a micro-proxy approach that’s optimized for the service mesh sidecar use cases.
+.A control plane “supervises the work,” and takes all the individual instances of the data plane—a set of isolated stateless sidecar proxies—
+and turns them into a distributed system. The control plane doesn’t touch any packets/requests in the system, 
+but instead, it allows a human operator to provide policy and configuration for all of the running data planes in the mesh. 
+The control plane also enables the data plane telemetry to be collected and centralized, ready for consumption by an operator.
+
+Istio is one of the most adopted meshes out there, targeted for enterprise adoption. Istio is fundamentally a control plane and data plane, 
+with sidecar Envoy-based proxies to handle traffic and apply actions on individual services. To observe communication between services, 
+Kiali dashboard, an open-source Istio dashboard, can be used to visualize interactions among services. 
+Service mesh alternatives: Linkerd, NGINX, Consul, Istio, Kuma
+Istio service mesh components:
+	Control Plane: For setting up and issuing configurations.
+	Data Plane: Where sidecar proxies live. Receives input from Control Plane.
+	Istio API: Can help programmatically configure sidecar proxies.
+	Gateway: An ingress and egress gateway to control inbound and outbound traffic at the application layer.
+
+Envoy: API-driven network proxy
+ features service mesh technologies can offer in each of these areas.
+	Connectivity:
+		Traffic Control (Routing, Splitting)
+		Gateway (Ingress, Egress)
+		Service Discovery
+		A/B Testing, Canary
+		Service Timeouts, Retries
+	Reliability:
+		Circuit Breaker, rate limiting
+		Fault Injection/Chaos Testing
+	Security:
+		Service-to-service authentication (mTLS)
+		Certificate Management
+		User Authentication (JWT)
+		User Authorization (RBAC)
+		Encryption
+	Observability:
+		Monitoring
+		Telemetry, Instrumentation, Metrics
+		Distributed Tracing
+		Service Graph
+####################
+TWELVE FACTOR: (https://12factor.net)
+	Codebase: One codebase tracked in revision control, many deploys
+		There is only one codebase per app, but there will be many deploys of the app. A deploy is a running instance of the app. 
+		This is typically a production site, and one or more staging sites. Additionally, every developer has a copy of the app running 
+		in their local development environment, each of which also qualifies as a deploy.
+	Dependencies: Explicitly declare and isolate dependencies
+		A twelve-factor app never relies on implicit existence of system-wide packages. It declares all dependencies, completely and exactly, 
+		via a dependency declaration manifest. One benefit of explicit dependency declaration is that it simplifies setup for developers new to the app. 
+	Config: Store config in the environment
+		An app’s config is everything that is likely to vary between deploys. Apps sometimes store config as constants in the code. 
+		This is a violation of twelve-factor, which requires strict separation of config from code.
+		The twelve-factor app stores config in environment variables
+	Backing Services: Treat backing services as attached resources
+		A backing service is any service the app consumes over the network as part of its normal operation (postgres, rabbitmq, smtp...)
+		The code for a twelve-factor app makes no distinction between local and third party services. 
+		To the app, both are attached resources, accessed via a URL or other locator/credentials stored in the config.
+		For example a local SMTP server could be swapped with a third-party SMTP service (such as Postmark) without code changes. 
+		In both cases, only the resource handle in the config needs to change.
+	Build, Release, Run: Strictly separate build and run stages
+		The twelve-factor app uses strict separation between the build, release, and run stages.  For example, it is impossible to make changes to the code at runtime,
+		since there is no way to propagate those changes back to the build stage.
+		Every release should always have a unique release ID, such as a timestamp of the release (such as 2011-04-06-20:32:17) or an incrementing number 
+		(such as v100). Releases are an append-only ledger and a release cannot be mutated once it is created. Any change must create a new release.
+	Processes: Execute the app as one or more stateless processes
+		Twelve-factor processes are stateless and share-nothing. Any data that needs to persist must be stored in a stateful backing service, typically a database.
+		Even when running only one process, a restart (triggered by code deploy, config change...) will usually wipe out all local (e.g., memory and filesystem) state.
+	Port Binding: Export services via port binding
+		The web app exports HTTP as a service by binding to a port, and listening to requests coming in on that port.
+		HTTP is not the only service that can be exported by port binding (redis, amqp protocols...)
+	Concurrency: Scale out via the process model
+		 HTTP requests may be handled by a web process, and long-running background tasks handled by a worker process.
+	Disposablity: Maximize robustness with fast startup and graceful shutdown
+		The twelve-factor app’s processes are disposable, meaning they can be started or stopped at a moment’s notice. 
+		This facilitates fast elastic scaling, rapid deployment of code or config changes, and robustness of production deploys.
+		Processes should strive to minimize startup time.
+		Processes shut down gracefully when they receive a SIGTERM signal from the process manager.
+		Processes should also be robust against sudden death, in the case of a failure in the underlying hardware. 
+	Dev/Prod Parity: Keep development, staging, and production as similar as possible
+		The twelve-factor app is designed for continuous deployment by keeping the gap between development and production small. 
+		Make the time gap small: a developer may write code and have it deployed hours or even just minutes later.
+		Make the personnel gap small: developers who wrote code are closely involved in deploying it and watching its behavior in production.
+		Make the tools gap small: keep development and production as similar as possible.
+		The twelve-factor developer resists the urge to use different backing services between development and production,
+	Logs: Treat logs as event streams
+		A twelve-factor app never concerns itself with routing or storage of its output stream. It should not attempt to write to or manage logfiles. 
+		Instead, each running process writes its event stream, unbuffered, to stdout. During local development, the developer will view this stream 
+		in the foreground of their terminal to observe the app’s behavior.
+		Most significantly, the stream can be sent to a log indexing and analysis system such as Splunk, 
+		or a general-purpose data warehousing system such as Hadoop/Hive
+	Admin Processes: Run admin/management tasks as one-off processes
+		One-off (one time) admin processes should be run in an identical environment as the regular long-running processes of the app. 
+		They run against a release, using the same codebase and config as any process run against that release. 
+		Admin code must ship with application code to avoid synchronization issues.
+
+####################
+REACT: 
+	react creates virtual dom(updates faster, no memory wastage, update jsx if element updates), server side rendering
+	jsx: javascript xml. browserlar jsx okuyamaz o sebeple babel ile jsx -> javascript donusumu yapılır
+	everything is component (functional or class component -> local state ve lifecycle hooks), each has render() and this returns single react element
+	props: read-only properties that is passed from parent to child, state is the source of data -> setState is async func
+	react lifecycle methods: componentWillMount(), componentDidMount(), componentWillReceiveProps(), shouldComponentUpdate()
+		componentWillUpdate() -> just before render, componentDidUpdate() -> just after render, componentWillUnmount() 
+	redux : is a state container for JavaScript applications and is used for the entire applications state management
+		Action – It’s an object that describes what happened. -> disptach edilir ve reducer yakalar
+		Reducer –  It is a place to determine how the state will change.
+		Store – State/ Object tree of the entire application is saved in the Store.
+		View – Simply displays the data provided by the Store.
+	react Router is a powerful routing library built on top of React
+	A form element whose value is controlled by React in this way is called a controlled component
+	create-react-app is the official CLI (Command Line Interface) for React to create React apps with no build configuration.
+
+
+####################
+SPRING BOOT
+Main features : starters, auto-configuration, actuator, logging, security
+pom'da parent olarak spring-boot-starter-parent kullanılır, spring boot starter olarak daha birçok dependecy de sunuyor -> aop, data-jpa, security, test, web
+We can use properties files, YAML files, environment variables, system properties, and command-line option arguments to specify configuration properties
+Spring Boot Supports Relaxed Binding: @ConfigurationProperties private String myProp -> it can be bound to any of these: myProp, my-prop, my_prop, or MY_PROP.
+Actuator: These features allow us to monitor and manage applications when they're running in production. 
+	/actuator/env,health,httptrace,info,metrics,loggers,mapppings
+Reactive Spring: reactive desteği olan componentler ile (örneğin mongo), spring webflux kullanarak geliştirilebilir. Flux ve Mono dönülür
+Spring Boot: to reduce complexity of configuration, use spring initializr to create new project
+PostgresDB entegrasyon: Hikari connection pool, hibernate 2nd level cache, docker-compose.yaml
+MonogDB entegrasyon: docker-compese.yaml, replica setler ile transaction desteği var, ChainedTransactionManager(PlatformTransactionManager ...) ile trx yonetimi
+RabbitMQ entegrasyon: 
+	MQ tarafında: 
+		DirectExchange -> routingKey ile match eden queueya mesajlari deliver eder
+		FanoutExchange -> routingKey ignore edilir, tüm queuelara deliver edilir
+		TopicExchange -> routingKey ile topic match ediyorsa o queueya deliver edilir
+		HeaderExchange -> header parametrelerinin match etmesi durumnda deliver edilir
+		Queue tanımında x-dead-letter-exchange ve x-dead-letter-routing-key keyleri ile DLQ tanımı yapılabilir
+	Consumer tarafında ise @RabbitListener(queues = "mimdemo.queue1", concurrency = "2-4") ile queue dinlenir ve işlem yapılır, 
+		hata durumda AmqpRejectAndDontRequeueException fırlatılır ise
+		message queuedan düşer (ya da spring.rabbitmq.listener.simple.default-requeue-rejected=false set edilerek),
+		spring.rabbitmq.listener.simple.retry  configurationları ile de hata yönetimi yapılır -> DLQ öncesi
+
+
+####################
+SPRING CLOUD ==> https://javatechonline.com/microservices-in-java/, https://www.youtube.com/watch?v=BnknNTN8icw
+Service Registration & Discovery (Netflix Eureka) [tyk, kong api gateway, hashicorp consul]:
+	When you have multiple services running together within an application, they need to detect each other to communicate. In order to make it possible,
+	there should exist one medium where all microservices register themselves. Subsequently, when any service wants to communicate, it can connect to that medium
+	and discovers other service to communicate. This medium is nothing but Service Registry & Discovery which is itself a microservice.
+	Eureka Server is only to register and discover microservices. Eureka never supports making HTTP call to any microservice
+	For this purpose, we use Netflix Eureka to make a kind of server which can register the microservices & discover them when required by the other microservice.
+	Every Microservice will register into the Eureka server with a service Id and Eureka server will have information(port, IP addresses etc.) of all the microservices
+	running as client applications. Further, in order to implement it we create a microservice using Spring Boot project and include spring-cloud-starter-eureka-server
+	dependency mandatorily. A service (Spring Boot Application in our case) annotated with @EnableEurekaServer will work as Eureka server.
+	A service(Spring Boot Application in our case) annotated with @EnableEurekaClient will work as a Eureka Client application
+		DiscoveryClient (Legacy client) : This is a basic client. It supports fetching Service Instances from Eureka server based on Service Id as List type. 
+			Developer has to choose one instance with less load factor manually 
+		LoadBalancerClient (new client) : It will fetch only one Service Instance from Eureka based on Service Id that has less load factor
+			LoadBalancerClient is an interface. Its implementation is provided by Spring Cloud Netflix-Ribbon
+		FeignClient/Open Feign (Abstract client) : We also call it as Declarative Rest Client. @EnableFeignClients at starter class and 
+			define interface for one Consumer with annotation @FeignClient(name=”ServiceId”).
+	DiscoveryClient and LoadBalancerClient communicate with Eureka to get Service Instance details, but they don’t support HTTP calls. 
+	But, Feign Client acts as a combination client. In fact, it gets Service Instance from Eureka Server, and supports making the HTTP call.
+	Although the previous versions of Spring Boot were using the Ribbon to enable the load-balancing feature. However, we can get the load balancing feature enabled 
+	if we are using Feign Client & Eureka. spring-cloud-starter-openfeign is the dependency to include Feign Client.
+ API Gateway (Zuul Proxy Server -> Spring Cloud Gateway):
+ 	API Gateway is the single entry & exit point of all the microservices in the application. It is also a type of microservice, that calls all other microservices 
+	using Eureka and it should also be registered with the Eureka Server like other microservices. 
+	API Gateway helps in implementing Security, applying filters, SSO(Single Sing On), dynamic routing etc.
+ 	Newer versions of Spring Boot suggests us to use Spring Cloud Gateway in place of Zuul (spring-cloud-starter-gateway). Spirng cloud gateway:
+		Match routes on any request attribute
+		Define Predicates & Filters
+		Integrates with Spring Cloud Discovery Client (Load Balancing)
+		Path Rewritting
+ Circuit Breaker (Spring Cloud Hystrix -> resilience4j):
+ 	If the actual method of a microservice is continuously throwing exception, then stop executing actual method and redirect each request to a fallback method, 
+	such concept is called Circuit Breaker. We add the @EnableHystrix annotation on our main application class to make our Spring Boot application act as a 
+	Circuit Breaker. In addition, @HystrixCommand(fallbackMethod = “DUMMY METHOD NAME”) at RestController method level. (spring-cloud-starter-hystrix)
+	Currently, support of Hystrix is not available as it has kept into the maintenance phase, resilience4j can be used.
+	In order to implement complete Fault Tolerance, even including circuit breaker, we use Resilience4j API. It has multiple separate modules such as Rate Limiter, 
+	Time Limiter, Bulkhead, Circuit Breaker, Retry etc (@RateLimiter, @TimeLimiter, @Bulkhead, @CircuitBreaker, @Retry) (pring-cloud-starter-circuitbreaker-resilience4j)
+ Config Server (Spring Cloud Config Server):
+ 	If we have same ‘key=value’ properties in every microservice, then we can define all of them in one common properties file outside of all microservices projects
+	we add the @EnableConfigServer annotation on our main application class to make our Spring Boot application act as a Config Server. (spring-cloud-config-server)
+ Distributed Tracing & Logging (Sleuth & Zipkin, ELK) [splunk, dynatrace]:
+ 	one request can involve multiple microservices till the completion of the request. Also, Logging is not going to be a simple process as each microservice 
+	will have its own log file. Sleuth provides unique IDs for request flows.There are two types of IDs : Trace ID and Span ID. Trace ID is a unique Id is for 
+	a complete flow (from Request till Response). Span Id is a unique ID for one microservice flow. Zipkin works in a client server model. In every microservice,
+	we should also add this dependency along with Sleuth. Collects data from microservice using Sleuth and provide to Zipkin Server. There must be only one 
+	centralized Zipkin Server that collects all data from Zipkin Client and displays it as a UI
+	ELK Stack (Elasticsearch, Logstash, Kibana) is one of the most popular tools to monitor our application via log analysis.
+ Spring Boot Actuator: 
+ 	Spring Boot Actuator provides endpoints for managing and monitoring of your Spring Boot application
+	In order to enable Spring Boot Actuator add spring-boot-starter-actuator dependency. Some of the popular & important actuator endpoints are:
+		env : in order to know the environment variables used in the application.
+		beans : in order to view the Spring beans and its types, scopes and dependency used in the application.
+		health : in order to view the application health.Additionally, we can get the data like Memory for Disk Space, PING STATUS etc.
+		info : in order to get information of current microservice to other Clients/Users/Dev etc.
+		trace : in order to view the list of traces of your Rest endpoints.
+		metrics : in order to view the application metrics such as memory used, free memory, classes, threads, system uptime etc.
+ 
+####################
+SERVERLESS ==> https://www.redhat.com/en/topics/cloud-native-apps/what-is-serverless 
+Serverless is a cloud-native development model that allows developers to build and run applications without having to manage servers.
+There are still servers in serverless, but they are abstracted away from app development. Developers can simply package their code in containers for deployment.
+Once deployed, serverless apps respond to demand and automatically scale up and down as needed. when a serverless function is sitting idle, it doesn’t cost anything
+Serverless apps are deployed in containers that automatically launch on demand when called.
+
+Under a standard Infrastructure-as-a-Service (IaaS) cloud computing model, users prepurchase units of capacity, meaning you pay a public cloud provider for always-on server 
+components to run your apps. It’s the user’s responsibility to scale up server capacity during times of high demand and to scale down when that capacity is no longer needed.
+The cloud infrastructure necessary to run an app is active even when the app isn’t being used.
+ 
+With serverless architecture, by contrast, apps are launched only as needed. When an event triggers app code to run, the public cloud provider dynamically allocates 
+resources for that code. The user stops paying when the code finishes executing. With serverless, routine tasks such as managing the operating system and file system, 
+security patches, load balancing, capacity management, scaling, logging, and monitoring are all offloaded to a cloud services provider
+Under a serverless model, a cloud provider runs physical servers and dynamically allocates their resources on behalf of users who can deploy code straight into production
+Serverless computing offerings typically fall into two groups, Backend-as-a-Service (BaaS) and Function-as-a-Service (FaaS).  
+BaaS gives developers access to a variety of third-party services and apps. For instance, a cloud-provider may offer authentication services, extra encryption, 
+cloud-accessible databases, and high-fidelity usage data. With BaaS, serverless functions are usually called through application programming interfaces (APIs).
+More commonly, when developers refer to serverless, they’re talking about a FaaS model. Under FaaS, developers still write custom server-side logic,
+but it’s run in containers fully managed by a cloud services provider. 
+The major public cloud providers all have one or more FaaS offerings. They include Amazon Web Services with AWS Lambda, Microsoft Azure with Azure Functions, 
+Google Cloud with multiple offerings, and IBM Cloud with IBM Cloud Functions, among others. 
+Some organizations choose to operate their own FaaS environments using open source serverless platforms, including Red Hat® OpenShift® Serverless, 
+which is built on the Knative project for Kubernetes.
+ 
+Function-as-a-Service (FaaS) is an event-driven computing execution model where developers write logic that is deployed in containers fully managed by a platform, 
+then executed on demand. In contrast to BaaS, FaaS affords a greater degree of control to the developers, who create custom apps rather than relying on a library of
+prewritten services. Using FaaS, developers can call serverless apps through APIs which the FaaS provider handles through an API gateway.
+ 
+Serverless architecture is ideal for asynchronous, stateless apps that can be started instantaneously. Likewise, serverless is a good fit for use cases that see infrequent,
+unpredictable surges in demand. Think of a task like batch processing of incoming image files. Or a task like watching for incoming changes to a database and then applying 
+a series of functions
+
+Kubernetes container orchestration platform is a popular choice for running serverless environments. But Kubernetes by itself doesn’t come ready to natively run 
+serverless apps. Knative is an open source community project which adds components for deploying, running, and managing serverless apps on Kubernetes. The Knative serverless
+environment lets you deploy code to a Kubernetes platform, like Red Hat OpenShift. With Knative, you create a service by packaging your code as a container image and handing 
+it to the system. Your code only runs when it needs to, with Knative starting and stopping instances automatically.
+Knative consists of 3 primary components:
+	Build - A flexible approach to building source code into containers.
+	Serving - Enables rapid deployment and automatic scaling of containers through a request-driven model for serving workloads based on demand.
+	Eventing - An infrastructure for consuming and producing events to stimulate apps. Apps can be triggered by a variety of sources, such as events from your own apps, 
+	cloud services from multiple providers, Software-as-a-Service (SaaS) systems, and Red Hat AMQ streams.
+As an alternative to a FaaS solution controlled by a single service provider, Knative can run in any cloud platform that runs Kubernetes. This can include running in an 
+on-premise data center. This gives organizations more agility and flexibility in running their serverless workloads.
+ 
+####################
+ENTERPRISE INTEGRATION PATTERNS (https://www.enterpriseintegrationpatterns.com/toc.html)
+How can I integrate multiple applications so that they work together and can exchange information?
+->File Transfer
+	Have each application produce files containing information that other applications need to consume. Integrators take the responsibility of transforming files 
+	into different formats. Produce the files at regular intervals according to the nature of the business.
+->Shared Database
+	Integrate applications by having them store their data in a single Shared Database.
+->Remote Procedure Invocation
+	Develop each application as a large-scale object or component with encapsulated data. Provide an interface to allow other applications 
+	to interact with the running application.
+->Messaging
+	Use Messaging to transfer packets of data frequently, immediately, reliably, and asynchronously, using customizable formats.
+ 	Mesage Channel: Messaging applications transmit data through a Message Channel, a virtual pipe that connects a sender to a receiver. 
+		A newly installed messaging system doesn’t contain any channels; you must determine how your applications need to communicate 
+		and then create the channels to facilitate it.
+	Messages: A Message is an atomic packet of data that can be transmitted on a channel
+	Pipes and Filters: In the simplest case, the message system delivers a message directly from the sender’s computer to the receiver’s computer. 
+		However, actions often need to be performed on the message after it is sent by its original sender but before it is received by its final receiver.
+		For example, the message may have to be validated or transformed because the receiver expects a different message format than the sender.
+	Message Router: In a large enterprise with numerous applications and channels to connect them, a message may have to go through several channels to reach 
+		its final destination. The route a message must follow may be so complex that the original sender does not know what channel will get the message 
+		to the final receiver. Instead, the original sender sends the message to a Message Router 
+	Message Translator: Various applications may not agree on the format for the same conceptual data; the sender formats the message one way, yet the receiver expects 
+		it to be formatted another way. To reconcile this, the message must go through an intermediate filter, a Message Translator, 
+		that converts the message from one format to another.
+	Message Endpoint: An application does not have some built-in capability to interface with a messaging system. Rather, it must contain a layer of code 
+		that knows both how the application works and how the messaging system works, bridging the two so that they work together. 
+		This bridge code is a set of coordinated Message Endpoints that enable the application to send and receive messages.
+	
+####################
+RICHARDSON MATURITY MODEL (https://martinfowler.com/articles/richardsonMaturityModel.html)
+Let's assume I want to book an appointment with my doctor.
+ 
+Level 0: In a level 0 scenario, the hospital will expose a service endpoint at some URI. I then post to that endpoint a document containing the details of my request.
+ POST /appointmentService HTTP/1.1
+	[various other headers]
+	<openSlotRequest date = "2010-01-04" doctor = "mjones"/>
+ HTTP/1.1 200 OK
+	[various headers]
+	<openSlotList>
+	  <slot id = "1234" doctor = "mjones" start = "1400" end = "1450"/>
+	  <slot id = "5678" doctor = "mjones" start = "1600" end = "1650"/>
+	</openSlotList>
+ 
+Level 1 (Resources): So now rather than making all our requests to a singular service endpoint, we now start talking to individual resources.
+ POST /doctors/mjones HTTP/1.1
+	[various other headers]
+	<openSlotRequest date = "2010-01-04"/>
+ HTTP/1.1 200 OK
+	[various headers]
+	<openSlotList>
+	  <slot id = "1234" doctor = "mjones" start = "1400" end = "1450"/>
+	  <slot id = "5678" doctor = "mjones" start = "1600" end = "1650"/>
+	</openSlotList>
+ 
+Level 2 (Http Verbs):  we have used HTTP POST verbs for all  interactions here in level 0 and 1, but some people use GETs instead or in addition. 
+ 	Level 2 moves away from this, using the HTTP verbs as closely as possible to how they are used in HTTP itself.
+ GET /doctors/mjones/slots?date=20100104&status=open HTTP/1.1
+	Host: royalhope.nhs.uk
+ HTTP/1.1 200 OK
+	[various headers]
+	<openSlotList>
+	  <slot id = "1234" doctor = "mjones" start = "1400" end = "1450"/>
+	  <slot id = "5678" doctor = "mjones" start = "1600" end = "1650"/>
+	</openSlotList>
+ 
+Level 3 (Hypermedia Controls): final level introduces HATEOAS (Hypertext As The Engine Of Application State).
+ 	 It addresses the question of how to get from a list open slots to knowing what to do to book an appointment.
+ GET /doctors/mjones/slots?date=20100104&status=open HTTP/1.1
+	Host: royalhope.nhs.uk
+ HTTP/1.1 200 OK
+	[various headers]
+	<openSlotList>
+	  <slot id = "1234" doctor = "mjones" start = "1400" end = "1450">
+	     <link rel = "/linkrels/slot/book" 
+		   uri = "/slots/1234"/>
+	  </slot>
+	  <slot id = "5678" doctor = "mjones" start = "1600" end = "1650">
+	     <link rel = "/linkrels/slot/book" 
+		   uri = "/slots/5678"/>
+	  </slot>
+	</openSlotList>
+
+
+####################
+DESIGN PATTERNS : (https://refactoring.guru/design-patterns/java)
+## STRUCTURAL DESIGN PATTERNS:
+COMPOSITE PATTERN:
+	Using the Composite pattern makes sense only when the core model of your app can be represented as a tree. 
+	For example, imagine that you have two types of objects: 
+	Products and Boxes. A Box can contain several Products as well as a number of smaller Boxes. 
+	These little Boxes can also hold some Products or even smaller Boxes, and so on. 
+	The Composite pattern suggests that you work with Products and Boxes through a common interface which declares a method for calculating the total price.
+	How would this method work? For a product, it’d simply return the product’s price. For a box, it’d go over each item the box contains, 
+	ask its price and then return a total for this box. If one of these items were a smaller box, that box would also start going over its contents and so on,
+	until the prices of all inner components were calculated. A box could even add some extra cost to the final price, such as packaging cost.
+	Component: Declares the interface for all objects in an composite, optionally defines an interface for accesing the leaf
+		The Component interface describes operations that are common to both simple and complex elements of the tree.
+	Leaf: Defines the primitive objects, without children. The Leaf is a basic element of a tree that doesn’t have sub-elements.
+		Usually, leaf components end up doing most of the real work, since they don’t have anyone to delegate the work to.
+	Composite: Defines the behaviour of components that have children, stores child components, implements chil-related operations
+		The Container (aka composite) is an element that has sub-elements: leaves or other containers. 
+		A container doesn’t know the concrete classes of its children. 
+		It works with all sub-elements only via the component interface. Upon receiving a request, a container delegates the work to its sub-elements, 
+		processes intermediate results and then returns the final result to the client.
+	Use the Composite pattern when you have to implement a tree-like object structure.
+PROXY PATTERN:
+	A proxy controls access to the original object, allowing you to perform something either before or after the request gets through to the original object.
+	The Proxy pattern suggests that you create a new proxy class with the same interface as an original service object. 
+	Then you update your app so that it passes the proxy object to all of the original object’s clients. 
+	Upon receiving a request from a client, the proxy creates a real service object and delegates all the work to it.
+	Subject: is an interface or an abstract class. The Service Interface declares the interface of the Service. 
+		The proxy must follow this interface to be able to disguise itself as a service object.
+	Real Subject: is the core implementation. The Service is a class that provides some useful business logic.
+	Proxy: is the implentation of component buta adds extra logic(security, logging, timing etc) before forwarding the request to the real implementation.
+		It has a field of type "real subject" of course (constructor argument)
+		The Proxy class has a reference field that points to a service object. After the proxy finishes its processing (e.g., lazy initialization, logging, 
+		access control, caching, etc.), it passes the request to the service object.
+		Usually, proxies manage the full lifecycle of their service objects.
+ADAPTER PATTERN:
+	converts the interface of a class into another interface the client expects, allows objects with incompatible interfaces to collaborate.
+	proxy pattern forwards the request but adapter pattern transforms it, so the logic is completely different	
+DECORATOR PATTERN:
+	lets you attach new behaviors to objects by placing these objects inside special wrapper objects that contain the behaviors.
+	we want to extend objects at runtime, inheritance is not practical as we would need to know the concrete behaviour, the added behaviour may be revoked
+	A wrapper is an object that can be linked with some target object. The wrapper contains the same set of methods as the target and 
+	delegates to it all requests it receives. However, the wrapper may alter the result by doing something either 
+	before or after it passes the request to the target.
+FACADE PATTERN: 
+	when the client ask for an easy way. they currently call method1+2+3+4 for doing something. Facade class makes
+	complex interface easier to use. This pattern also decouples clients from subsystems
+	but facade should be very light, for example only forwards to the right object etc. It should not be a complex a God Object
+## CREATIONAL DESIGN PATTERNS: 
+Assume we have a shape interface (or abstract class) and it has a draw() method. Rectangle and Oval are the implementation of this class
+And we have a client method that takes list of shapes and call draw() method in a loop. In this case polymorphism works perfect. 
+Because the objest are already exist
+But what if we have have a file containing definition of shapes and we want to create correct shapes.In this case, we read the file,
+delegate the creation to the factory, factory creates shape (rectangle or triangle, bu it is a shape)
+FACTORY PATTERN:
+	We have an abstract class (or interface) shape, and it has a create method that creates rectange or triangle etc
+	Imagine that you’re creating a logistics management application. The first version of your app can only handle transportation by trucks, 
+	so the bulk of your code lives inside the Truck class. After a while, your app becomes pretty popular. 
+	Each day you receive dozens of requests from sea transportation companies to incorporate sea logistics into the app.
+	The Product declares the interface, which is common to all objects that can be produced by the creator and its subclasses.
+	Concrete Products are different implementations of the product interface.
+	The Creator class declares the factory method that returns new product objects. It’s important that the return type of this method 
+	matches the product interface.You can declare the factory method as abstract to force all subclasses to implement their own versions of the method. 
+	As an alternative, the base factory method can return some default product type.
+ABSTRACT FACTORY PATTERN:
+	Imagine that you’re creating a furniture shop simulator. Your code consists of classes that represent:
+		A family of related products, say: Chair + Sofa + CoffeeTable
+		Several variants of this family. For example, products Chair + Sofa + CoffeeTable are available in these variants: 
+		Modern, Victorian, ArtDeco.
+	Abstract Products declare interfaces for a set of distinct but related products which make up a product family.
+	Concrete Products are various implementations of abstract products, grouped by variants. 
+		Each abstract product (chair/sofa) must be implemented in all given variants (Victorian/Modern).
+	The Abstract Factory interface declares a set of methods for creating each of the abstract products.
+	Concrete Factories implement creation methods of the abstract factory. 
+		Each concrete factory corresponds to a specific variant of products and creates only those product variants.
+	Although concrete factories instantiate concrete products, signatures of their creation methods must return corresponding abstract products. 
+	This way the client code that uses a factory doesn’t get coupled to the specific variant of the product it gets from a factory. 
+	The Client can work with any concrete factory/product variant, as long as it communicates with their objects via abstract interfaces.
+BUILDER:
+	We have a very complex object so we need many constructors to allow for various client config
+	The Builder pattern suggests that you extract the object construction code out of its own class and move it to separate objects called builders.
+SINGLETON:
+
+## BEHAVIORAL DESIGN PATTERNS: 
+OBSERVER PATTERN:
+	a change to one object must be communicated to an an unnumber of dependent objects (broadcasting)
+	it is not possible (undesirable) to have the changing object directly talk to dependent objects
+	It provides a way to react to events happening in other objects without coupling to their classes. (subscribe and notify so there is no coupling)
+COMMAND PATTERN:
+	command is an interface and we have concrete classes that holds the actual algorithm (sum, square etc)
+TEMPLATE PATTERN:
+	we have an interface and two implementations of this interface, but implementations are very similar. For this commonality we introduce an abstract class
+	In this class we implement common part and leave the differentiating parts(an abstract protected method) to concrete subclasses (first two implementations)
+STRATEGY PATTERN:
+	we have an object thas has many complex resposibilities (for example a printer which queues the request, manages users and do the printing)
+	if this object implements for example queuing itself (via map and self constructed methods), it would be very complex, 
+	so leave this stuff to an other queue implemtation class and use this => so you can easily change the queue strategy 
+	(by changing the implementation of queue field) 
+
+####################
+LOAD BALANCING (Network layer algorithms and Application layer algorithms)
+=>Round Robin:
+Round robin (RR) algorithm is a circular distribution of requests to enterprise servers in a sequence
+Weighted Round Robin: each server is assigned a weight depending on its composition. Based on the preassigned efficiency the load is distributed in a cyclical procedure
+Dynamic Round Robin: used to forward requests to associated servers based on real time calculation of assigned server weights
+=>Least Connections:
+By taking into consideration the number of active and current connections to each application instance, ‘Least Connections’ load balancing algorithm 
+distributes the load by choosing the server with the least number of active transactions (connections).
+=>Weighted Least Connections:
+the load distribution based on both the factors – the number of current and active connections to each server and the relative capacity of the server.
+=>Source IP Hash:
+load balancing a server is selected based on a unique hash key. The Hash key is generated by taking the source and destination of the request. 
+Based on the generated hash key, servers are assigned to clients.
+=>URL Hash:
+used in load balanced servers to serve to request URL i.e to serve content unique per server. Its improves capacity of backend caches by avoiding cache duplication.
+=>The Least Response Time:
+the backend server with the least number of active connections and the least average response time is selected. 
+Using this algorithm IT ensures quick response time for end clients.
+=>The Least Bandwidth Method:
+servers are selected based on the server’s bandwidth consumption i.e the server consuming least bandwidth is selected (measured in Mbps)
+=>The Custom Load Method:
+In the custom load method, the backend servers are chosen based on the load. CPU usage, memory and response time of the server is taken into consideration
+to calculate the server load. This algorithm is suitable when traffic is predictable and stable, in case of uneven and sudden traffic changes its not so suitable
+
+=>Least Pending Requests (LPR):
+The pending requests are monitored and efficiently distributed across the most available servers. 
+The benefits of LPR benefits include:
+	Accurate load distribution– LPR intelligently selects the best available server to process a connection in real-time, 
+		unlike network layer algorithms. Network layers algorithm distribute requests as per preset rules.
+	Request specific distribution– LPR acknowledges the correct processing time and distributes load accordingly.
+
+
+####################
+DATA STRUCTURE and ALGORITHMS (https://learning.oreilly.com/videos/from-0-to/9781788626767/9781788626767-video2_1/)
+		https://github.com/PacktPublishing/From-0-to-1-Data-Structures-Algorithms-in-Java
+		http://cslibrary.stanford.edu/
+measures of performance: time (number of operations), space(memory + disk space) and network resources that code uses. Complexity is the measure of performance.
+Complexity focuses on how the number of operations change based on input size
+Big-0 notation: complexity analysis is based on worst-case scenario
+LINKEDLIST: head is the first element in the list. Last element of the list points/references to null. Node of a linkedlist contains data (any kind) 
+and next field (reference to next node)
+adding an element at the end : O(N), adding an elemnt at the begining : O(1), finding an alement: O(N), deleting the first element: O(1), deleting random: O(N)
+public class Node<T extends Comparable<T>> {
+	private T data;
+	private Node<T> next;
+	public Node(T data){this.data = data; setNext(null);}
+}
+public LinkedList<T extends Comparable<T>> implements Clonable{
+	private Node<T> head = null;
+	public LinkedList(){}	
+}
+how to iterate : 
+	Node<Integer> h = head;
+	while(h != null){
+		h = head.getNext();
+	}
+pop element:
+	public T popElement(){
+		if(head != null){
+			T topElement = head.getData();
+			head = head.getNext();
+			return topElement;
+		}
+		return null;
+	}
+STACK: push and pop are the two main operations. Last element you add the stack is the first element you access.(lifo) End of the stack is called as top.
+peek is just to see the element (you do not want to remove the top). LinkedList is the best choice to build a stack
+push and pop is O(1), isEmpty and isFull is O(1). if size field does not exist isFull will be O(N). Space complexity is O(N)
+Used in: undo operations, back button on browser, translation form infix to postfix (a+b => ab+)
+public static class Element<T> {
+	private T data;
+	private Element next;
+	public Element(T data, Element next){this.data = data; this.next=next;}
+}
+public class Stack<T>{
+	private static int MAX_SIZE=40;
+	private Element<T> top;
+	pricate int size=0;
+	
+	public void push(T data) throws StackOverflowException{
+		if(size == MAX_SIZE){
+			throw new StackOverflowException();
+		}
+		Element elem = new Element(data,top);
+		top=elem;
+		size++;
+	}
+}
+QUEUE: first come, first served. Elements are added to the end and removed from the beginning. (fifo or lilo).
+enqueue: adding an element to the end of the queue, dequeue: removing element from the top of the queue
+peek: see the first element element of the queue, offer: adds an element to the queue if space is available
+LinkedList with a pointer to both head and tail is the best choice to build a queue. If our queue is fixed-size, this time circular-queue with pointers
+to head and tail is better choice: enqueu and dequeue is O(1), isEmpty and isfull is O(1), space complexit is O(N)
+public class Queue<T> {
+    private static final int SPECIAL_EMPTY_VALUE = -1;
+    private static int MAX_SIZE = 40;
+    private T[] elements;
+    private int headIndex = SPECIAL_EMPTY_VALUE;
+    private int tailIndex = SPECIAL_EMPTY_VALUE;
+    
+    public Queue(Class<T> clazz) {
+        elements = (T[]) Array.newInstance(clazz, MAX_SIZE);
+    }
+    
+    public void enqueue(T data) throws QueueOverflowException {
+        if (isFull()) {
+            throw new QueueOverflowException();
+        }
+        tailIndex = (tailIndex + 1) % elements.length;
+        elements[tailIndex] = data;
+        // This is the first element enqueued, set the head index to the tail index.
+        if (headIndex == SPECIAL_EMPTY_VALUE) {
+            headIndex = tailIndex;
+        }
+    }
+    
+     public T dequeue() throws QueueUnderflowException {
+        if (isEmpty()) {
+            throw new QueueUnderflowException();
+        }
+        T data = elements[headIndex];
+        // This was the last element in the queue.
+        if (headIndex == tailIndex) {
+            headIndex = SPECIAL_EMPTY_VALUE;
+        } else {
+            headIndex = (headIndex + 1) % elements.length;
+        }
+        return data;
+    }
+    
+    public boolean isFull()  {
+        int nextIndex = (tailIndex + 1) % elements.length;
+        return nextIndex == headIndex;
+    }
+}
+
+BINARYTREE: 
+Former data structures was linear but in trees there is an hierarchy(relations with child and parent) and made up of nodes. In binary there each node can have 0,1 or 2 childs.
+Every tree has a root node, arrows are called (form parent to child) as edge, leafs are the nodes with no children.Siblings are the nodes at the same level (same dist to root)
+    public static class Node<T> {
+        private T data;
+        private Node<T> leftChild;
+        private Node<T> rightChild;
+
+        public Node(T data) {
+            this.data = data;
+        }
+	...
+	}
+BreadthFirstTraversal: visit all nodes of a level before moving on to the next level
+    public static void breadthFirst(Node root) throws Queue.QueueUnderflowException, Queue.QueueOverflowException {
+        if (root == null) {
+            return;
+        }
+
+        Queue<Node> queue = new Queue<>(Node.class);
+        queue.enqueue(root);
+        while (!queue.isEmpty()) {
+            Node node = queue.dequeue();
+            print(node);
+
+            if (node.getLeftChild() != null) {
+                queue.enqueue(node.getLeftChild());
+            }
+            if (node.getRightChild() != null) {
+                queue.enqueue(node.getRightChild());
+            }
+        }
+    }
+
+DepthFirstTraversal: visit as deep as possible (preorder, inorder (left-node-right), postorder)
+preorder
+    public static void preOrder(Node<Character>root) {
+        if (root == null) {
+            return;
+        }
+
+        print(root);
+        preOrder(root.getLeftChild());
+        preOrder(root.getRightChild());
+    }
+    
+BINARYSEARCHTREE (OrderedBinaryTree):
+All the children of the left child have a value smaller than or equal to the node's value. Fast insertion and fast lookups
+Insertion complexity is O(LOGN) in the avarage case. ıf the tree is skeewed, it is O(N). Same for lookup complexity
+balanced binary search tree: hight of the left and right difference is at most 1.
+    public static Node<Integer> insert(Node<Integer> head, Node<Integer> node) {
+        if (head == null) {
+            return node;
+        }     
+        if (node.getData() <= head.getData()) {
+            head.setLeftChild(insert(head.getLeftChild(), node));
+        } else {
+            head.setRightChild(insert(head.getRightChild(), node));
+        } 
+        return head;
+    }
+    public static Node<Integer> lookup(Node<Integer> head, int data) {
+        if (head == null) {
+            return null;
+        }
+        if (head.getData() == data) {
+            return head;
+        }
+        if (data <= head.getData()) {
+            return lookup(head.getLeftChild(), data);
+        } else {
+            return lookup(head.getRightChild(), data);
+        }
+    }
+    
+BINARYHEAP:
+priority queue implementation.Insert elements along with priority information. Access the highest priority element. Remove the hihest priority element
+Insertion O(LOGN), access is O(1), removing is O(LOGN). This heap is tree with special props or constraints on the values of its nodes.(heap property)
+Minimum heap (min value is the highest priority, every node valus <= value of its children, so smallest value is the root) and Maximum heap 
+If H is the heigth of the tree, the leaf nodes should only be at levek H or H-1 (complete binary tree) (shape property)
+We need to acces left child, right child and parent, so we need extra 3 space, so heaps can be represented by using an array more efficiently
+node at i, left child at 2i+1, right at 2i+2. (parent at (i-1)/2 integer division)
+heapify: sift-up or shift-down (getting the element which is at the wrong position and sifting up or down). insertion in heap: we insert the element as a leaf node (possibliy
+wrong position) and then siftup. removal in heap: remove the root, copy the last element to index 0 and siftdown
+
+public abstract class Heap<T extends Comparable> {
+    private static int MAX_SIZE = 40;
+    private T[] array;
+    private int count = 0;
+    public Heap(Class<T> clazz) {
+        this(clazz, MAX_SIZE);
+    }
+    public Heap(Class<T> clazz, int size) {
+        array = (T[]) Array.newInstance(clazz, size);
+    }
+    public int getLeftChildIndex(int index) {
+        int leftChildIndex = 2 * index + 1;
+        if (leftChildIndex >= count) {
+            return -1;
+        }
+        return leftChildIndex;
+    }   
+    ...
+    public void insert(T value) throws HeapFullException {
+        if (count >= array.length) {
+            throw new HeapFullException();
+        }
+
+        array[count] = value;
+        siftUp(count);
+
+        count++;
+    }
+    public T removeHighestPriority() throws HeapEmptyException {
+        T min = getHighestPriority(); // index 0
+
+        array[0] = array[count - 1];
+        count--;
+        siftDown(0);
+
+        return min;
+    }
+}
+public class MinHeap<T extends Comparable> extends Heap<T> {
+   @Override
+    protected void siftDown(int index) {
+        int leftIndex = getLeftChildIndex(index);
+        int rightIndex = getRightChildIndex(index);
+
+        // Find the minimum of the left and right child elements.
+        int smallerIndex = -1;
+        if (leftIndex != -1 && rightIndex != -1) {
+            smallerIndex = getElementAtIndex(leftIndex).compareTo(getElementAtIndex(rightIndex)) < 0
+                    ? leftIndex : rightIndex;
+        } else if (leftIndex != -1) {
+            smallerIndex = leftIndex;
+        } else if (rightIndex != -1) {
+            smallerIndex = rightIndex;
+        }
+
+        // If the left and right child do not exist stop sifting down.
+        if (smallerIndex == -1) {
+            return;
+        }
+
+        // Compare the smaller child with the current index to see if a swap
+        // and further sift down is needed.
+        if (getElementAtIndex(smallerIndex).compareTo(getElementAtIndex(index)) < 0) {
+            swap(smallerIndex, index);
+            siftDown(smallerIndex);
+        }
+    }
+    
+    @Override
+    protected void siftUp(int index)  {
+        int parentIndex = getParentIndex(index);
+
+        if (parentIndex != -1 &&
+                getElementAtIndex(index).compareTo(getElementAtIndex(parentIndex)) < 0) {
+            swap(parentIndex, index);
+
+            siftUp(parentIndex);
+        }
+    }
+}
+GRAPH:
+is used to represent reletionship between entities. Graph is a set of vertices and edges. Edges can be lines or arrows (directed edge: one way, in this graph vertices
+are called as source and destionation) A and B are adjacent if they are connected, if 3 edges touch F, 3 edges are incident on F and F has degree of 3
+a connected graph with no cycles is a tree. A unconnected graph is called forest (a disjoint set of trees)
+Vertex is the entitiy, Edge is the relationship. Let us say entities are people and edges are the professional 
+relationship between them, this is called professional graph (ex linkedin, social graph ex is facebook). if entites are locations and edges are rail,road and air 
+(transformation), this time graph is map (google map) (phone network ex is at&t). if the entities are computers and edges are wires of wireless, 
+this is called internet (google, cisco)
+
+		-adjacency matrix -adjacency list -adjacency set
+-space			V2		E+V		E+V
+-is edge present	1	    Degree of V		LOG(Degree of V)
+-iterate over		V	    Degree of V		Degree of V
+edges on vertex
+
+public interface Graph {
+    enum GraphType {
+        DIRECTED,
+        UNDIRECTED
+    }
+    void addEdge(int v1, int v2);
+    List<Integer> getAdjacentVertices(int v);
+}
+
+adjacency matrix: 
+requires V2(v square) space. use this when graph is well connected and many nodes are connected to many nodes
+public class AdjacencyMatrixGraph implements Graph {
+    private int[][] adjacencyMatrix;
+    private GraphType graphType = GraphType.DIRECTED;
+    private int numVertices = 0;
+    
+    public AdjacencyMatrixGraph(int numVertices, GraphType graphType) {
+        this.numVertices = numVertices;
+        this.graphType = graphType;
+        adjacencyMatrix = new int[numVertices][numVertices];
+        for (int i = 0; i < numVertices; i++) {
+            for (int j = 0; j < numVertices; j++) {
+                adjacencyMatrix[i][j] = 0;
+            }
+        }
+    }
+    
+    @Override
+    public void addEdge(int v1, int v2) {
+        if (v1 >= numVertices || v1 < 0 || v2 >= numVertices || v2 < 0) {
+            throw new IllegalArgumentException("Vertex number is not valid");
+        }
+        adjacencyMatrix[v1][v2] = 1;
+        if (graphType == GraphType.UNDIRECTED) {
+            adjacencyMatrix[v2][v1] = 1;
+        }
+    }
+    
+    @Override
+    public List<Integer> getAdjacentVertices(int v) {
+        if (v >= numVertices || v < 0) {
+            throw new IllegalArgumentException("Vertex number is not valid");
+        }
+        List<Integer> adjacentVerticesList = new ArrayList<>();
+        for (int i = 0; i < numVertices; i++) {
+            if (adjacencyMatrix[v][i] == 1) {
+                adjacentVerticesList.add(i);
+            }
+        }
+        // Always return the vertices in ascending order.
+        Collections.sort(adjacentVerticesList);
+        return adjacentVerticesList;
+    }
+}
+    
+adjacency list:
+suitable for  sparse graphs with few connections between nodes.
+
+adjacency set:
+  public static class Node {
+      private int vertexNumber;
+      private Set<Integer> adjacencySet = new HashSet<>();
+        public Node(int vertexNumber) {
+            this.vertexNumber = vertexNumber;
+        }
+        public int getVertexNumber() {
+            return vertexNumber;
+        }
+        public void addEdge(int vertexNumber) {
+            adjacencySet.add(vertexNumber);
+        }
+        public List<Integer> getAdjacentVertices() {
+            List<Integer> sortedList = new ArrayList<>(adjacencySet);
+            Collections.sort(sortedList);
+            return sortedList;
+        }
+  }
+public class AdjacencySetGraph implements Graph {
+    private List<Node> vertexList = new ArrayList<>();
+    private GraphType graphType = GraphType.DIRECTED;
+    private int numVertices = 0;
+    public AdjacencySetGraph(int numVertices, GraphType graphType) {
+        this.numVertices = numVertices;
+        for (int i = 0; i < numVertices; i++) {
+            vertexList.add(new Node(i));
+        }
+        this.graphType = graphType;
+    }
+    @Override
+    public void addEdge(int v1, int v2) {
+        if (v1 >= numVertices || v1 < 0 || v2 >= numVertices || v2 < 0) {
+            throw new IllegalArgumentException("Vertex number is not valid: " + v1 + ", " + v2);
+        }
+
+        vertexList.get(v1).addEdge(v2);
+        if (graphType == GraphType.UNDIRECTED) {
+            vertexList.get(v2).addEdge(v1);
+        }
+    }
+
+    @Override
+    public List<Integer> getAdjacentVertices(int v) {
+        if (v >= numVertices || v < 0) {
+            throw new IllegalArgumentException("Vertex number is not valid: " + v);
+        }
+
+        return vertexList.get(v).getAdjacentVertices();
+    }
+}
+
+
+
+
+####################
+SORTING ALGORITHMS
+what is the complexity of algo, how much extra space the algo needs, is the sort stable (does equal elements maintain their order), 
+how many comparisions and swaps we need, is the sort is adaptive (is it possible to early know the list is sorted and break)
+SelectionSort:
+In each iteration, take one element, compare it with other one by one and swap if the compared one is smaller
+complexity is O(N2), it takes extra O(1) space (for swap), it makes O(N2) comparisions and O(N) swaps, not adaptive and not stable
+BubbleSort:
+For each iteration, every element is compared with its neighbour(adjacent) and swapped if theye are not in the right order (generallt start form the end of the array)
+in the worst case complexity is O(N2), it takes extra O(1) space (for swap),it makes O(N2) comparisions and O(N2) swaps, is adaptive and stable
+InsertionSort:
+Start with a sorted 1 size sub-list. Compare last element of the sorted list with the adjacent element and place the new element (with bubbling) to the rigth place
+in the worst case complexity is O(N2), it takes extra O(1) space (for swap),it makes O(N2) comparisions and O(N2) swaps, is adaptive and stable
+InsertionSort vs BubbleSort: In the insertion sort we are just comparing the last element to check the list is fully sorted but in bubble sort we pass through the whole list, 
+in bubble sort we do N comparisions but in imnsertion sort we do the comparison till we find the right position in th sorted list. Swap counts are bigger at bubble sort
+ShellSort:
+partition the main list into sublist which has elements seperated by an incerement (for increment= 2 => 0,2,4,6 and 1,3,5,7) Each sublist is sorted with insertinSort
+increment value is reduced till it is 1 (not a rule but start with increment = length/2 and then increment = increment  / 2).
+So better performance because using insertion sort for partial sorted list
+in the worst case complexity is between O(N) O(N2), it takes extra O(1) space (for swap), is adaptive and stable
+MergeSort:
+required additional space. uses divide and conquer recursively. Splits the original list and merges the sorted sublists
+complexity is O(NLOGN), it takes extra O(N) space, is not adaptive but stable. use it when you have space but not time
+    public static void mergeSort(int[] listToSort) {
+        if (listToSort.length == 1) {
+            return;
+        }
+
+        int midIndex = listToSort.length / 2 + listToSort.length % 2;
+        int[] listFirstHalf = new int[midIndex];
+        int[] listSecondHalf = new int[listToSort.length - midIndex];
+        split(listToSort, listFirstHalf, listSecondHalf);
+
+        mergeSort(listFirstHalf);
+        mergeSort(listSecondHalf);
+
+        merge(listToSort, listFirstHalf, listSecondHalf);
+        print(listToSort);
+    }
+QuickSort:
+default for C++ and C languages. uses divide and conquer recursively. Partition is not based on lenght as in mergesort, it is based on a pivot element. (usually 1st element)
+divide the list into sublist according to this pivot
+avarage case complexity is O(NLOGN), it takes extra O(LOGN) space, is not adaptive and not stable.
+    public static void quickSort(int[] listToSort, int low, int high) {
+        if (low >= high) {
+            return;
+        }
+        int pivotIndex = partition(listToSort, low, high);
+        quickSort(listToSort, low, pivotIndex - 1);
+        quickSort(listToSort, pivotIndex + 1, high);
+    }
+    public static int partition(int[] listToSort, int low, int high) {
+        int pivot = listToSort[low];
+        int l = low;
+        int h = high;
+        while (l < h) {
+            while (listToSort[l] <= pivot && l < h) {
+                l++;
+            }
+            while (listToSort[h] > pivot) {
+                h--;
+            }
+            if (l < h) {
+                swap(listToSort, l, h);
+            }
+        }
+        swap(listToSort, low, h);
+
+        System.out.println("Pivot: " + pivot);
+        print(listToSort);
+        return h;
+    }
+
+Binary Search on Sorted List:
+choose the middle element and check this element, if middle is larger search at the first half. Complexity is O(logN)
+    public static int binarySearch(int[] sortedArray, int number, int min, int max) {
+        if (min > max) {
+            return -1;
+        }
+
+        int mid = min + (max - min) / 2;
+        if (sortedArray[mid] == number) {
+            return mid;
+        }
+
+        if (sortedArray[mid] > number)  {
+            return binarySearch(sortedArray, number, min, mid - 1);
+        } else {
+            return binarySearch(sortedArray, number, mid + 1, max);
+        }
+    }
+    
+HeapSort:
+First convert unsorted list or array into a heap. Use the heap to access the max element and put it into the right position (heapify + sort)
+Heapify: arrayin en son elemanında başlayarak yapılır (örnek index = 10), bu elemenanın parentı bulunur ve gereken swap işlemi yapılır. (parent ind = 4, 9 ve 10 childları)
+Sonra bu parentın solundakiler ile devam edilir (index = 3 ten index = 0 a kadar) Tabi bu noktada swap edilen her eleman için heap property kontrol edilir (max or min heap)
+Sorting:yukarıdaki aşama sonucu valid bir max heapimiz oluştu.index = 0 ile index =10 u swap ederiz. bu işlem sonucu index = 0 daki max heapi artık bozuyor
+childları ile compare ederek percolateDown yaparız. Buna sona kadar devam ederiz. (index = 9 a kadar çünkü 10'a en buyuğu koyduk ve onu dışarda tutuyoruz)
+Heapify + sort sonunda, maxheap'ten sorted bir array elde ederiz, index= 0'da en küçük olacak şekilde.
+Complexity is O(NLOGN), is not adaptive and not stable, space complexit is O(1)
+    private static void percolateDown(int index, int endIndex) {
+        int leftChildIndex = getLeftChildIndex(index, endIndex);
+        int rightChildIndex = getRightChildIndex(index, endIndex);
+
+        if (leftChildIndex != -1 && array[leftChildIndex] > array[index]) {
+            swap(leftChildIndex, index);
+            percolateDown(leftChildIndex, endIndex);
+        }
+        if (rightChildIndex != -1 && array[rightChildIndex] > array[index]) {
+            swap(rightChildIndex, index);
+            percolateDown(rightChildIndex, endIndex);
+        }
+    }
+    public static void heapify(int endIndex) {
+        int index = getParentIndex(endIndex, endIndex);
+        while (index >= 0) {
+            percolateDown(index, endIndex);
+            index--;
+        }
+    }
+    public static void heapsort() {
+        heapify(array.length - 1);
+
+        int endIndex = array.length - 1;
+        while (endIndex > 0) {
+            swap(0, endIndex);
+            endIndex--;
+            percolateDown(0, endIndex);
+        }
+    }
+
+TopologicalSort:
+ordering of vertices in a directed acyclic graph in which each node comes before all the nodes to which it has outgoing edges.
+we first with a vertex which has no incoming edge (means indegree of this vertex = 0). If there is no 'indegree = 0 vertex' no topological sort is possible (graph has a cycle)
+then we remove this vertes (with edges) and reduce the indegrees of immediate neighbours. element having indegree = 0 is the next element of the sort
+Complexity is O(V+E) => every vertex and edge is visited once
+    @Override
+    public int getIndegree(int v){
+        if (v < 0 ||  v >= numVertices) {
+            throw new  IllegalArgumentException("Vertex number is not valid");
+        }
+        int indegree = 0;
+        for (int i = 0; i < numVertices; i++) {
+            if (getAdjacentVertices(i).contains(v)) {
+                indegree++;
+            }
+        }
+        return indegree;
+    }
+    
+    public static List<Integer> sort(Graph graph){
+        LinkedList<Integer> queue = new LinkedList<>();
+        Map<Integer, Integer> indegreeMap = new HashMap<>();
+
+        for (int vertex = 0; vertex < graph.getNumVertices(); vertex++) {
+            int indegree = graph.getIndegree(vertex);
+            indegreeMap.put(vertex, indegree);
+            if (indegree == 0) {
+                queue.add(vertex);
+            }
+        }
+
+        List<Integer> sortedList = new ArrayList<>();
+        while (!queue.isEmpty()){
+            // Dequeue of the nodes from the list if there are more than one.
+            // If more than one element exists then it means that the graph
+            // has more than one topological sort solution.
+            int vertex = queue.pollLast();
+            sortedList.add(vertex);
+
+            List<Integer> adjacentVertices = graph.getAdjacentVertices(vertex);
+            for (int adjacentVertex : adjacentVertices) {
+                int updatedIndegree = indegreeMap.get(adjacentVertex) - 1;
+                indegreeMap.remove(adjacentVertex);
+                indegreeMap.put(adjacentVertex, updatedIndegree);
+
+                if (updatedIndegree == 0) {
+                    queue.add(adjacentVertex);
+                }
+            }
+        }
+	// this is how we detect cycles
+        if (sortedList.size() != graph.getNumVertices()) {
+            throw new RuntimeException("The Graph had a cycle!");
+        }
+
+        return  sortedList;
+    }
+
+
+####################
+DATA STRUCTURE & ALGORITHMS PROBLEMS
+
+>Maximum Eement in Minimum Heap: One of the leaf nodes is maximum. If we only scan leafs we will find it. If we find first leaf nodes, the other leaf nodes are
+	in the contiguous locations. Parent node of the last element is the last internal node (index = 10 un parentı 4, bu durumda index = 5 first leaf)
+>K Largest Element in Stream: When there is a stream,size'ı K olan bir min heap yarat, yeni element geldiğinde top ile karşılaştır, top'tan buyuk ise heape ekle
+	ve heapify et
+#Shortest Path Algorithms:
+run time complexity: is O(V+E) if adjacency list is used, is O(V*V) if adjacency matrix is used
+
+>Dijkstra: shortest path of a weighted graph. In a weighted graph, visit the neighbour which is connected by an edge with the lowest weight (use priority queue to process)
+(greedy algorithm: may not find the best solution, tries to find the best chois step by step, may not see the big picture, finding approximate solutions for hard problems)
+it is possible to visit a vertex more then once (this time we check whether the new distance is smaller or not. in unweighted graph it is not possible). 
+if new distance is smaller, then update the distance table, put the vertex in the queue again (relaxation)
+priority queue implementation determines the efficiency of the algorithm.
+with binary heap:  O(ELOGV)
+with array: O(E + V * V)
+	A --2--> B --2--> D
+	|	 >      >	   
+	3	 5    4	
+	|	 |  |
+	v	 |
+	C --6--> E
+	lets say source is A, then distance table:
+	Vertex	Distance	Last Vertes
+	A	0		A
+	B	Inf->2		->A
+	C	Inf->3		->A
+	D	Inf->4		->B
+	E	Inf->9		->C
+
+>Bellman-Ford:
+weight can be negative for a weighted graph. we explore all the adjacent vertex, not just the shortest one.So we do not use a priority queue, we use simple queue
+(this algorithm is no greedy)
+we need (V-1) iterations: longest path in graph with vertex V has V-1 edges. After 1st iteration, the edges that are 1 edge away from the source is accurate
+after 2nd,the edges that are 2 edges away from the source is accurate.So with V-1 iterations we can guarentee the accurate result
+	A --2--> B --3--> D
+	|      > |      >	   
+	1   -5	 -2    1	
+	|   |	 |  |
+	v	 v
+	C --2--> E
+	Vertex	Distance	Last Vertes
+	A	0			A
+	B	Inf->-4			->C
+	C	Inf->1			->B
+	D	Inf->1->-5		->E->B
+	E	Inf->0->-6		->B
+
+negative cycles: B->E->D is nagative cycle. If A is source and destination is B. direct path A->B is 2, but A->B->E->D-B is -5 and so on... each time we find a shorter path
+after V-1 iteration, we do one more iteration and if the any distance updated, there is a negative cycle
+	A --2--> B <--2-- D
+	|	 |      >	   
+	3	 -5    -4	
+	|	 |  |
+	v	 >
+	C --6--> E
+running time, if adjacency list is used O(E*V), if adjacency matrix is used than O(V3) (because in adjacenct matric E = V *V)
+#Minimal Spanning Tree:
+Spanning tree is a subgraph that contains all the vertices and is also a tree. so one graph can have multiple spanning trees. Minimum spanning tree is a
+spannging tree with min cost (in terms of weight of the edges) Shortest path algorithms try to find a path from a source to destination but spanning tree 
+algorithms try to find cheapest way to interconnect all vertices
+>Prim's:
+works well for undirected connected graphs. Generate distance table just like in Dijkstra but there is a difference. In Prim's, we only care about the weight of the edge
+not the cumulative distance from the source (bec there isn't any source, we can start from any vertex) this is also a greedy algorithm
+Running time complexity is O(ELOGV) if binary heap is used for priority queue, O(E + V*V) if array is used for priority queue
+	[A]    5    [E]
+	   3     5      11
+	15   [B]    4    [D]
+	   2	 8     4
+	[C]    9    [F]
+	
+	lets start with F 
+		find all vertices adjacent to F. F-E is min so we choose this edge and add E to our spanning tree
+		then find all vertices adjacent to F and E. F-D is min so we choose this edge and add D to our spanning tree and so on ...
+	Vertex	Distance	Last Vertes
+	A	Inf   ->5	E
+	B	Inf->8->5	E
+	C	Inf->9		F
+	D	Inf->4		F
+	E	Inf->4		F
+	F	0		F
+	
+>Kruskal:
+works with unconnected graphs (forest). this is a greedy algorithm. use a priority queue for edges where the weight determines the priority
+while adding an adge ensure that it does not create a cycle. Foe example: "BC 2", "AB 3","DF 4", "EF 4", "BE 5", "AE 5" ...
+Runtime complexity is O(ELOGE)
+>Course Schedule with Pre-Reqs: design a valid order in which the student can take his cources. Implements pre-reqs as directed edges (bec this is a relationship)
+if cs101 is a pre-req for cs102 than cs101 --> cs102. so we build a directed graph with un-weighted edges. So use topological sort.
+>Shortest Path in a Weighted Graph with Fewest Edges: use Dijkstra algorithm with a little modification. shortest path is now a tuple as (distance,edge), it was
+just distance in Dijkstra. If two vertices have same distance, we chpse the one with fewer edges
+priority queue representation Dijkstra		New (vertes, distance, edges)
+				B 3		B 3 1
+				E 4		E 4 2
+distance table updated. we update distance table if the new distance is smaller or new distance and old is equal but number of edges are fewer
+	Vertex	Distance	Last Vertes	Edges
+	A	0		A		0
+	B	Inf		
+	C	Inf		
+	D	Inf		
+	E	Inf		
+
+ 
